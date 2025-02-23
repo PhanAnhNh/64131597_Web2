@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="ketquatinhtoan.jsp" method="post">
+        <label>Nhập số a:</label>
+        <input type="number" name="a" step="any" required>
+        <br>
+        <label>Nhập số b:</label>
+        <input type="number" name="b" step="any" required>
+        <br>
+        <label>Chọn phép toán:</label>
+        <select name="operation">
+            <option value="add">Cộng (+)</option>
+            <option value="subtract">Trừ (-)</option>
+            <option value="multiply">Nhân (*)</option>
+            <option value="divide">Chia (/)</option>
+        </select>
+        <br>
+        <button type="submit">Tính toán</button>
+    </form>
+</body>
+</html>
