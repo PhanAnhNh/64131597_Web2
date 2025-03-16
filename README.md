@@ -12,3 +12,6 @@ Bài tập giao diện Login với SpringBoot
 Giao diện sau khi login vào
 ![image](https://github.com/user-attachments/assets/37fc0df0-1a64-4e68-90d9-49c3600d014d)
 
+Giao diện BMI với Spring Boot
+![image](https://github.com/user-attachments/assets/ad2e8397-e85d-42a9-9f99-7eb1e421b751)
+
