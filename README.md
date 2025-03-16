@@ -15,3 +15,6 @@ Giao diện sau khi login vào
 Giao diện BMI với Spring Boot
 ![image](https://github.com/user-attachments/assets/ad2e8397-e85d-42a9-9f99-7eb1e421b751)
 
+Giao diện sau khi submit
+
+![image](https://github.com/user-attachments/assets/19db795f-b41b-452d-905d-3ccc23e936e4)
