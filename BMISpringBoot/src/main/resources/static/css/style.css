@@ -1,0 +1,81 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to right, #ff9966, #ff5e62);
+}
+
+/* Container chính */
+.container {
+    width: 350px;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+/* Hiệu ứng hover */
+.container:hover {
+    transform: scale(1.05);
+}
+
+/* Tiêu đề */
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Nhãn (Label) */
+label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #444;
+    display: block;
+    text-align: left;
+    margin: 10px 0 5px;
+}
+
+/* Ô nhập liệu */
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border 0.3s;
+}
+
+/* Hiệu ứng khi nhập */
+input:focus {
+    border: 2px solid #ff5e62;
+    outline: none;
+}
+
+/* Nút Submit */
+button {
+    width: 100%;
+    padding: 12px;
+    background: #28a745;
+    color: #ffffff;
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #218838;
+}

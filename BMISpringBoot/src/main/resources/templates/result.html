@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>BMI Result</title>
+    <link rel="stylesheet" href="/css/styleresult.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Your BMI Result</h2>
+        <p><strong>Height:</strong> <span th:text="${bmiModel.height}"></span> m</p>
+        <p><strong>Weight:</strong> <span th:text="${bmiModel.weight}"></span> kg</p>
+        <p><strong>BMI:</strong> <span th:text="${bmiModel.bmi}"></span></p>
+        <p><strong>Category:</strong> <span th:text="${bmiModel.category}"></span></p>
+        <a href="/">Calculate Again</a>
+    </div>
+</body>
+</html>
