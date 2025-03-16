@@ -1,0 +1,65 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to right, #74ebd5, #acb6e5);
+}
+
+/* Container chính */
+.container {
+    width: 350px;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+/* Hover nhẹ nhàng */
+.container:hover {
+    transform: scale(1.05);
+}
+
+/* Tiêu đề */
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Các đoạn văn bản */
+p {
+    font-size: 18px;
+    margin: 10px 0;
+    color: #555;
+}
+
+/* Nhấn mạnh chữ đậm */
+strong {
+    color: #222;
+}
+
+/* Link quay lại */
+a {
+    display: inline-block;
+    text-decoration: none;
+    margin-top: 15px;
+    padding: 10px 15px;
+    background: #28a745;
+    color: #fff;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+a:hover {
+    background: #218838;
+}
