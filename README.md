@@ -18,3 +18,6 @@ Giao diện BMI với Spring Boot
 Giao diện sau khi submit
 
 ![image](https://github.com/user-attachments/assets/19db795f-b41b-452d-905d-3ccc23e936e4)
+
+Ví dụ bố cục với Fragment
+![image](https://github.com/user-attachments/assets/65af3c92-54d3-43a0-b663-3c3172ac4517)
