@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Sinh Viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            position: sticky;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+	<div th:insert="fragment/header :: header"></div> <!-- Chèn Header Fragment -->
+	<div th:insert="fragment/menu :: menu"></div> <!-- Chèn menu Fragment -->
+
+	<div class="container mt-4">
+	    <div class="row g-3">
+	        <!-- Left Content: Student Table -->
+	        <div class="col-md-8">
+            <div class="p-4 border rounded bg-light">
+                <h2 class="mb-4">Danh Sách Sinh Viên</h2>
+                <a href="/add" class="btn btn-primary mb-3">Thêm Sinh Viên</a>
+                <table class="table table-hover table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>STT</th>
+                            <th>Họ và Tên</th>
+                            <th>MSSV</th>
+                            <th>Điểm</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="student : ${students}">
+                            <td th:text="${student.stt}"></td>
+                            <td th:text="${student.name}"></td>
+                            <td th:text="${student.studentId}"></td>
+                            <td th:text="${student.score}"></td>
+                            <td>
+				                <a th:href="@{/edit(studentId=${student.studentId})}" class="btn btn-warning btn-sm">Sửa</a>
+				                <a th:href="@{/delete(studentId=${student.studentId})}" class="btn btn-danger btn-sm"
+				                   onclick="return confirm('Bạn có chắc chắn muốn xóa?');">Xóa</a>
+				            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+	
+	        <!-- Right Sidebar -->
+	        <div class="col-md-4">
+    <div class="sidebar">
+        <div class="card" style="max-height: 300px; overflow: hidden;">
+            <img src="/TongHopGK.jpg" class="card-img-top" alt="Profile Picture" style="height: 150px; object-fit: cover;">
+            <div class="card-body">
+                <h5 class="card-title">Sidebar Title</h5>
+                <p class="card-text">Some sidebar content here.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+	    </div>
+	</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<div th:insert="fragment/footer :: footer"></div> <!-- Chèn Header Fragment -->
+</body>
+</html>
