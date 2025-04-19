@@ -24,19 +24,24 @@ Ví dụ bố cục với Fragment
 
 Giao diện làm lại bài tập giữa kì môn web 2 
 Trang chủ
-![Screenshot 2025-04-15 073924](https://github.com/user-attachments/assets/2cacf894-e825-49e4-baaa-d8e0186ddbe4)
+![image](https://github.com/user-attachments/assets/a7151c35-321b-42dc-a61d-30296d10a52a)
+
 Page - list
-![Screenshot 2025-04-15 074114](https://github.com/user-attachments/assets/6b2959bb-9855-4ddc-b318-49649fbf4b35)
+![Screenshot 2025-04-19 162059](https://github.com/user-attachments/assets/25434d93-e3e7-4aab-8734-216d29260e04)
+
 Thêm Page
-![Screenshot 2025-04-15 074200](https://github.com/user-attachments/assets/df6a3902-6116-44a3-9fc4-2b72a83a2a52)
+![Screenshot 2025-04-19 162317](https://github.com/user-attachments/assets/a40d33b5-8875-4bba-8ea6-332fe6f76b75)
+
 Chi tiết page
-![Screenshot 2025-04-15 074451](https://github.com/user-attachments/assets/ac949fc4-f6fb-4ea5-a657-e37e223fe31d)
+![Screenshot 2025-04-19 162205](https://github.com/user-attachments/assets/ef400887-fd6a-4ea1-816c-4d7356f89683)
+
 Thêm post
-![Screenshot 2025-04-15 074705](https://github.com/user-attachments/assets/269677b2-10ba-439f-891e-f8e6b20727f9)
+![Screenshot 2025-04-19 162526](https://github.com/user-attachments/assets/519dc576-737d-46c9-9e30-0e412adfdcd2)
 Danh sách các post
-![Screenshot 2025-04-15 074725](https://github.com/user-attachments/assets/1ecca128-fbb7-4c5b-a7b8-521f979338c7)
+![Screenshot 2025-04-19 162452](https://github.com/user-attachments/assets/7306e12d-41be-46a4-9f55-a8c4bcd4641d)
+
 Chi tiết bài viết
-![Screenshot 2025-04-15 074753](https://github.com/user-attachments/assets/e0174b1b-c9ef-4ad9-863f-4cd1c6a534a0)
+![Screenshot 2025-04-19 162548](https://github.com/user-attachments/assets/07166c59-c5e1-4769-859f-3d9a10b7cc5e)
 
 
 
