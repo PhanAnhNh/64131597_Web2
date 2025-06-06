@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSDL Công trình thực tiễn</title>
+    <link rel="stylesheet" th:href="@{/css/congtrinhthuctien.css}" />
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div th:insert="fragments/sidebar :: sidebar"></div>
+
+        <!-- Main content -->
+        <main class="main">
+            <h1>Cơ sở dữ liệu Khoa học Công nghệ</h1>
+             <div th:insert="fragments/banner :: banner"></div>
+             <div class="search-container">
+                <h2><strong>Tìm Kiếm <span style="color:deeppink;">Dữ Liệu</span></strong></h2>
+               	<form th:action="@{/quanlykhoahoc/congtrinh/search}" method="get">
+        			<input type="text" name="keyword" class="search-input" placeholder="🔍 Nhập từ khóa..." th:value="${keyword}">
+       				 <button type="submit" class="search-button">🔍 Tìm Kiếm</button>
+    			</form>
+            </div>
+             
+
+            <div class="content">
+                <div class="result-header">
+                    <div class="result-title">
+                        <h2>CÔNG TRÌNH THỰC TIỄN</h2>
+                        <div class="underline"></div>
+                    </div>
+                    <div class="result-info">
+                        <span th:text="'1 - ' + ${#lists.size(congTrinhList)} + ' / ' + ${#lists.size(congTrinhList)} + ' KẾT QUẢ'"></span>
+                       
+                           <a th:href="@{/quanlykhoahoc/congtrinh/add}" class="export-btn btn btn-primary" sec:authorize="hasAnyAuthority('Admin', 'NKH')">
+   						 TẠO MỚI CÔNG TRÌNH
+					  </a>
+                       
+                    </div>
+                </div>
+                <div class="project-list" th:unless="${#lists.isEmpty(congTrinhList)}">
+                    <div class="project-card" th:each="congTrinh : ${congTrinhList}" th:attr="data-congtrinh-id=${congTrinh.congTrinhID}">
+                        <h3 th:text="${congTrinh.tenCongTrinh}"></h3>
+                    
+                        <p><strong>Năm bắt đầu:</strong> <span th:text="${congTrinh.namBatDau.year}"></span></p>
+                       
+                        <p><strong>Hình thức:</strong> <span th:text="${congTrinh.hinhThuc}"></span></p>
+                        <p><strong>Quy mô:</strong> <span th:text="${congTrinh.quyMo}"></span></p>
+                        <p><strong>Địa chỉ áp dụng:</strong> <span th:text="${congTrinh.noiApDung}"></span></p>
+                        <p><strong>Tác giả:</strong>
+                 			<span th:if="${congTrinh.thamGia.isEmpty()}">
+        					
+   							</span>
+   						 	<span th:each="nkh, stat : ${congTrinh.thamGia}">
+      					  	<span th:text="${nkh.hoTen}">Tên nhà khoa học</span><span th:if="${!stat.last}">,</span>
+    						</span>
+						</p>
+                       
+                        <a th:href="@{/quanlykhoahoc/congtrinh/edit/{id}(id=${congTrinh.congTrinhID})}" class="button" sec:authorize="hasAnyAuthority('Admin')">Chỉnh sửa</a>
+                            <a th:href="@{/quanlykhoahoc/congtrinh/delete/{id}(id=${congTrinh.congTrinhID})}" class="button" onclick="return confirm('Bạn có chắc chắn muốn xóa công trình này?')" sec:authorize="hasAnyAuthority('Admin')">Xóa</a>
+                    </div>
+                </div>
+                <div th:if="${#lists.isEmpty(congTrinhList)}">
+                    <p>Không có công trình nào được tìm thấy.</p>
+                </div>
+            </div>
+        </main>
+
+
+    </div>
+    <div th:insert="fragments/footer :: footer"></div>
+
+</body>
+
+</html>

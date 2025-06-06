@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chỉnh sửa công trình thực tiễn</title>
+    <!-- Liên kết CSS -->
+    <link rel="stylesheet" th:href="@{/css/congtrinh_edit.css}">
+    
+</head>
+
+<body>
+    <div th:insert="fragments/sidebar :: sidebar"></div>
+
+    <main class="main">
+        <div class="container">
+            <h2>CHỈNH SỬA CÔNG TRÌNH THỰC TIỄN</h2>
+            <form class="edit-form" th:action="@{/quanlykhoahoc/congtrinh/edit/{id}(id=${congTrinh.congTrinhID})}" th:object="${congTrinh}" method="post">
+                <div class="form-row">
+                    <label for="congTrinhID">Mã công trình:</label>
+                    <input type="text" id="congTrinhID" name="congTrinhID" th:value="${congTrinh.congTrinhID}" readonly>
+                </div>
+                <div class="form-row">
+                    <label for="tenCongTrinh">Tên công trình:</label>
+                    <textarea id="tenCongTrinh" name="tenCongTrinh" th:text="${congTrinh.tenCongTrinh}" required></textarea>
+                    <div class="error-message" th:if="${#fields.hasErrors('tenCongTrinh')}" th:errors="*{tenCongTrinh}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="hinhThuc">Hình thức:</label>
+                    <input type="text" id="hinhThuc" name="hinhThuc" th:value="${congTrinh.hinhThuc}" required>
+                    <div class="error-message" th:if="${#fields.hasErrors('hinhThuc')}" th:errors="*{hinhThuc}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="quyMo">Quy mô:</label>
+                    <input type="text" id="quyMo" name="quyMo" th:value="${congTrinh.quyMo}" required>
+                    <div class="error-message" th:if="${#fields.hasErrors('quyMo')}" th:errors="*{quyMo}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="noiApDung">Nơi áp dụng:</label>
+                    <input type="text" id="noiApDung" name="noiApDung" th:value="${congTrinh.noiApDung}" required>
+                    <div class="error-message" th:if="${#fields.hasErrors('noiApDung')}" th:errors="*{noiApDung}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="namBatDau">Năm bắt đầu:</label>
+                   <input type="date" id="namBatDau" th:field="${congTrinh.namBatDau}" placeholder="Chọn ngày bắt đầu" required>
+                    
+                </div>
+                <div class="form-row">
+                    <label for="namKetThuc">Năm kết thúc:</label>
+                    <input type="date" id="namKetThuc" name="namKetThuc" th:field="${congTrinh.namKetThuc}" required>
+                    
+                </div>
+                <div class="form-row">
+                    <label>Nhà khoa học tham gia:</label>
+                    <div class="author-dropdown-container">
+                        <div class="selected-authors"></div>
+                        <div class="author-dropdown-toggle">Chọn nhà khoa học</div>
+                        <div class="author-dropdown-menu">
+                            <a th:each="nkh : ${nkhList}" 
+                               th:data-id="${nkh.id}" 
+                               th:text="${nkh.hoTen}"
+                               th:classappend="${nkhIds != null and #arrays.contains(nkhIds, nkh.id)} ? 'selected' : ''"
+                               href="#"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="save-btn">Lưu</button>
+                    <a th:href="@{/quanlykhoahoc/congtrinh}" class="cancel-btn">Hủy</a>
+                </div>
+            </form>
+        </div>
+    </main>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const dropdownToggle = document.querySelector('.author-dropdown-toggle');
+        const dropdownMenu = document.querySelector('.author-dropdown-menu');
+        const selectedAuthorsContainer = document.querySelector('.selected-authors');
+        const form = document.querySelector('.edit-form'); // Target the form with class 'edit-form'
+        let selectedAuthors = [];
+
+        // Initialize selected authors from existing data
+        document.querySelectorAll('.author-dropdown-menu a.selected').forEach(item => {
+            const id = item.getAttribute('data-id');
+            const name = item.textContent;
+            selectedAuthors.push({ id, name });
+        });
+        updateSelectedAuthors();
+
+        // Toggle dropdown menu
+        dropdownToggle.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('show');
+        });
+
+        // Handle author selection
+        document.querySelectorAll('.author-dropdown-menu a').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const id = item.getAttribute('data-id');
+                const name = item.textContent;
+
+                if (selectedAuthors.some(author => author.id === id)) {
+                    selectedAuthors = selectedAuthors.filter(author => author.id !== id);
+                    item.classList.remove('selected');
+                } else {
+                    selectedAuthors.push({ id, name });
+                    item.classList.add('selected');
+                }
+                updateSelectedAuthors();
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target) && !selectedAuthorsContainer.contains(e.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+
+        // Update selected authors display
+        function updateSelectedAuthors() {
+            selectedAuthorsContainer.innerHTML = '';
+            selectedAuthors.forEach(author => {
+                const authorElement = document.createElement('div');
+                authorElement.className = 'selected-author';
+                authorElement.innerHTML = `
+                    ${author.name}
+                    <span class="remove-author" data-id="${author.id}">✕</span>
+                `;
+                selectedAuthorsContainer.appendChild(authorElement);
+            });
+
+            document.querySelectorAll('.remove-author').forEach(button => {
+                button.addEventListener('click', () => {
+                    const id = button.getAttribute('data-id');
+                    selectedAuthors = selectedAuthors.filter(author => author.id !== id);
+                    document.querySelector(`.author-dropdown-menu a[data-id="${id}"]`).classList.remove('selected');
+                    updateSelectedAuthors();
+                });
+            });
+        }
+
+        // Handle form submission
+        form.addEventListener('submit', (event) => {
+            // Clear any existing nkhIds inputs to avoid duplicates
+            const existingInputs = form.querySelectorAll('input[name="nkhIds"]');
+            existingInputs.forEach(input => input.remove());
+
+            // Add selected author IDs as multiple hidden inputs
+            selectedAuthors.forEach(author => {
+                const nkhIdsInput = document.createElement('input');
+                nkhIdsInput.type = 'hidden';
+                nkhIdsInput.name = 'nkhIds';
+                nkhIdsInput.value = author.id;
+                form.appendChild(nkhIdsInput);
+            });
+        });
+    });
+</script>
+</body>
+
+</html>

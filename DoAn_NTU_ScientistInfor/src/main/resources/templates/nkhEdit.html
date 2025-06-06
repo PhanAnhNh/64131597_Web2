@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chỉnh sửa nhà khoa học</title>
+    <!-- Liên kết CSS -->
+    <link rel="stylesheet" th:href="@{/css/nkh_edit.css}">
+</head>
+
+<body>
+    <div th:insert="fragments/sidebar :: sidebar"></div>
+
+    <main class="main">
+        <div class="container">
+            <h2>CHỈNH SỬA NHÀ KHOA HỌC</h2>
+            <form class="edit-form" th:action="@{/quanlykhoahoc/nkh/edit/{id}(id=${nkh.id})}" th:object="${nkh}" method="post">
+                <div class="form-row">
+                    <label for="id">Mã số:</label>
+                    <input type="text" id="id" name="id" th:field="*{id}" readonly>
+                    <div th:if="${#fields.hasErrors('id')}" class="error-message" th:errors="*{id}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="tenTaiKhoan">Tên tài khoản:</label>
+                    <select id="tenTaiKhoan" name="tenTaiKhoan" th:field="*{tenTaiKhoan}">
+                        <option value="" th:disabled="true" th:selected="${nkh.tenTaiKhoan == null}">Chọn tài khoản</option>
+                        <option th:each="tk : ${taiKhoanList}" 
+                                th:value="${tk.tenTaiKhoan}" 
+                                th:text="${tk.tenTaiKhoan}" 
+                                th:selected="${tk.tenTaiKhoan == nkh.tenTaiKhoan}">
+                        </option>
+                    </select>
+                    <div th:if="${#fields.hasErrors('tenTaiKhoan')}" class="error-message" th:errors="*{tenTaiKhoan}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="hoTen">Họ và tên:</label>
+                    <textarea id="hoTen" name="hoTen" th:field="*{hoTen}" required></textarea>
+                    <div th:if="${#fields.hasErrors('hoTen')}" class="error-message" th:errors="*{hoTen}"></div>
+                </div>
+                <div class="form-row">
+                    <label>Giới tính:</label>
+                    <div class="checkbox-group">
+                        <label><input type="radio" name="gioiTinh" th:field="*{gioiTinh}" value="Nam"> Nam</label>
+                        <label><input type="radio" name="gioiTinh" th:field="*{gioiTinh}" value="Nữ"> Nữ</label>
+                    </div>
+                    <div th:if="${#fields.hasErrors('gioiTinh')}" class="error-message" th:errors="*{gioiTinh}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="namSinh">Năm sinh:</label>
+                    <input type="number" id="namSinh" name="namSinh" th:field="*{namSinh}" required>
+                    <div th:if="${#fields.hasErrors('namSinh')}" class="error-message" th:errors="*{namSinh}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" th:field="*{email}" required>
+                    <div th:if="${#fields.hasErrors('email')}" class="error-message" th:errors="*{email}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="hocVi">Học vị:</label>
+                    <input type="text" id="hocVi" name="hocVi" th:field="*{hocVi}" required>
+                    <div th:if="${#fields.hasErrors('hocVi')}" class="error-message" th:errors="*{hocVi}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="nganhDaoTao">Ngành đào tạo:</label>
+                    <input type="text" id="nganhDaoTao" name="nganhDaoTao" th:field="*{nganhDaoTao}" required>
+                    <div th:if="${#fields.hasErrors('nganhDaoTao')}" class="error-message" th:errors="*{nganhDaoTao}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="linhVucNghienCuu">Lĩnh vực nghiên cứu:</label>
+                    <textarea id="linhVucNghienCuu" name="linhVucNghienCuu" th:field="*{linhVucNghienCuu}" required></textarea>
+                    <div th:if="${#fields.hasErrors('linhVucNghienCuu')}" class="error-message" th:errors="*{linhVucNghienCuu}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="chuyenMon">Chuyên môn:</label>
+                    <input type="text" id="chuyenMon" name="chuyenMon" th:field="*{chuyenMon}" required>
+                    <div th:if="${#fields.hasErrors('chuyenMon')}" class="error-message" th:errors="*{chuyenMon}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="hinhAnh">Ảnh đại diện:</label>
+                    <input type="text" id="hinhAnh" name="hinhAnh" th:field="*{hinhAnh}">
+                    <div th:if="${#fields.hasErrors('hinhAnh')}" class="error-message" th:errors="*{hinhAnh}"></div>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="save-btn">Lưu</button>
+                    <a th:href="@{/quanlykhoahoc/nhakhoahoc}" class="cancel-btn">Hủy</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

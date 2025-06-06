@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Thông tin nhà khoa học</title>
+    <meta charset="UTF-8"/>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 600px; margin: auto; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Thông tin nhà khoa học</h1>
+    <div th:if="${errorMessage}" class="error">
+        <p th:text="${errorMessage}"></p>
+    </div>
+    <div th:if="${nkh}">
+        <p><strong>ID:</strong> <span th:text="${nkh.nkhId}"></span></p>
+        <p><strong>Họ tên:</strong> <span th:text="${nkh.hoTen}"></span></p>
+        <p><strong>Tổng số đề tài:</strong> <span th:text="${tongSoDeTai}"></span></p>
+    </div>
+    <a href="/nkh/list">Quay lại danh sách</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSDL sách và giáo trình</title>
+    <link rel="stylesheet" th:href="@{/css/sachvagiaotrinh.css}" />
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        
+		<div th:insert="fragments/sidebar :: sidebar"></div>
+        <!-- Main content -->
+        <main class="main">
+            <h1>Cơ sở dữ liệu Khoa học Công nghệ</h1>
+            <div th:insert="fragments/banner :: banner"></div>
+            <div class="search-container">
+                <h2><strong>Tìm Kiếm <span style="color:deeppink;">Dữ Liệu</span></strong></h2>
+
+                <form th:action="@{/quanlykhoahoc/giaotrinh}" method="get">
+                    <input type="text" 
+                           name="keyword" 
+                           class="search-input" 
+                           placeholder="🔍 Nhập tên sách..." 
+                           th:value="${keyword}">
+                    <select name="nkhId" class="search-select">
+                        <option value="">🔽 Chọn tác giả</option>
+                        <option th:each="nkh : ${danhSachNhaKhoaHoc}"
+                                th:value="${nkh.id}"
+                                th:text="${nkh.hoTen}"
+                                th:selected="${nkh.id == selectedNkhId}"></option>
+                    </select>
+                    <select name="loaiSach" class="search-select">
+                        <option value="">🔽 Chọn loại sách</option>
+                        <option th:each="loai : ${loaiSachList}"
+                                th:value="${loai}"
+                                th:text="${#strings.replace(loai, '_', ' ')}"
+                                th:selected="${loai == selectedLoaiSach}"></option>
+                    </select>
+                    <button type="submit" class="search-button">🔍 Tìm Kiếm</button>
+                </form>
+            </div>
+
+            <div class="book-page">
+                <div class="book-header" style="display: flex; justify-content: space-between; align-items: center;">
+                	<div>
+                		<h2>📘 SÁCH & GIÁO TRÌNH</h2>
+                    	<div class="underline"></div>
+                	</div>    
+                    <a th:href="@{/quanlykhoahoc/giaotrinh/them-sach}" class="add-button" sec:authorize="hasAnyAuthority('Admin', 'NKH')">➕ Thêm Sách</a>     
+                </div>
+                
+
+                <div class="book-columns">
+                    <div class="book-section">
+                        <div class="book-list">
+                            <div th:each="sach : ${danhSachSach}" class="book-card">
+                                <a>
+                                    <h4 th:text="${sach.tenSach}">Tên sách</h4>
+                                </a>
+                                <p><strong>Tác giả:</strong> 
+                                    <span th:each="tacgia,iterStat : ${tacGiaMap[sach.id]}" 
+                                          th:with="isLast=${iterStat.last}"
+                                          th:text="${tacgia} + ${isLast ? '' : ', '}"></span>
+                                </p>
+                                <p><strong>Năm:</strong> <span th:text="${sach.namXuatBan.year}">Năm</span></p>
+                                <p><strong>Loại sách:</strong> <span th:with="formattedLoaiSach=${#strings.replace(sach.loaiSach, '_', ' ')}"
+                                          th:text="${formattedLoaiSach}">Loại sách</span></p>
+                                <p><strong>Nhà xuất bản:</strong> <span th:with="formattedNhaXuatBan=${#strings.replace(sach.nhaXuatBan, '_', ' ')}"
+                                          th:text="${formattedNhaXuatBan}">Nhà xuất bản</span></p>
+                                <div class="button">
+                                    <a th:href="@{/quanlykhoahoc/giaotrinh/sua-sach-giao-trinh(id=${sach.id})}" class="details-btn" sec:authorize="hasAuthority('Admin')">Sửa</a>
+                                    <form th:action="@{/quanlykhoahoc/giaotrinh/xoa-sach/{id}(id=${sach.id})}" 
+									      method="post"
+									      onsubmit="return confirm('Bạn có chắc chắn muốn xóa sách này?')"
+									      style="display: inline;">
+									    <button type="submit" class="delete-btn" sec:authorize="hasAuthority('Admin')">Xóa</button>
+									</form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </main>
+
+
+    </div>
+    
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+
+</html>

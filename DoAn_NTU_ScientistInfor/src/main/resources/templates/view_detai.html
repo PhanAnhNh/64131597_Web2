@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Xem chi tiết đề tài nghiên cứu</title>
+    <link rel="stylesheet" th:href="@{/css/viewDeTai.css}">
+</head>
+<body>
+    <div th:insert="fragments/sidebar :: sidebar"></div>
+    <main class="main">
+        <div class="container">
+            <h2>XEM CHI TIẾT ĐỀ TÀI NGHIÊN CỨU</h2>
+            <div class="input-form">
+                <div class="form-row">
+                    <label for="deTaiId">Mã đề tài:</label>
+                    <span class="value" th:text="${deTaiKH.deTaiId}">Mã đề tài</span>
+                </div>
+                <div class="form-row">
+                    <label for="tenDeTai">Tên đề tài:</label>
+                    <span class="value" th:text="${deTaiKH.tenDeTai}">Tên đề tài</span>
+                </div>
+                <div class="form-row">
+                    <label for="capDeTai">Cấp đề tài:</label>
+                    <span class="value" th:text="${deTaiKH.capDeTai}">Cấp đề tài</span>
+                </div>
+                <div class="form-row">
+                    <label for="donViChuTri">Đơn vị chủ trì:</label>
+                    <span class="value" th:text="${deTaiKH.donViChuTri}">Đơn vị chủ trì</span>
+                </div>
+                <div class="form-row">
+                    <label for="mucTieu">Mục tiêu:</label>
+                    <span class="value" th:utext="${deTaiKH.mucTieu != null ? deTaiKH.mucTieu : ''}">Mục tiêu</span>
+                </div>
+                <div class="form-row">
+                    <label for="noiDung">Nội dung:</label>
+                    <span class="value" th:utext="${deTaiKH.noiDung != null ? deTaiKH.noiDung : ''}">Nội dung</span>
+                </div>
+                <div class="form-row">
+                    <label for="ketQua">Kết quả:</label>
+                    <span class="value" th:utext="${deTaiKH.ketQua != null ? deTaiKH.ketQua : ''}">Kết quả</span>
+                </div>
+                <div class="form-row">
+                    <label for="namBatDau">Năm bắt đầu:</label>
+                    <span class="value" th:text="${deTaiKH.namBatDau != null ? #dates.format(deTaiKH.namBatDau, 'dd/MM/yyyy') : ''}">Năm bắt đầu</span>
+                </div>
+                <div class="form-row">
+                    <label for="namKetThuc">Năm kết thúc:</label>
+                    <span class="value" th:text="${deTaiKH.namKetThuc != null ? #dates.format(deTaiKH.namKetThuc, 'dd/MM/yyyy') : ''}">Năm kết thúc</span>
+                </div>
+                <div class="form-row">
+                    <label for="tinhTrang">Tình trạng:</label>
+                    <span class="value" th:text="${deTaiKH.tinhTrang}">Tình trạng</span>
+                </div>
+                <div class="form-row">
+                    <label for="xepLoai">Xếp loại:</label>
+                    <span class="value" th:text="${deTaiKH.xepLoai != null ? deTaiKH.xepLoai : ''}">Xếp loại</span>
+                </div>
+                <div class="form-row" th:if="${!#lists.isEmpty(deTaiKH.nhaKhoaHocs)}">
+                    <label>Nhà khoa học tham gia:</label>
+                    <div class="nkh-checkbox-container">
+                        <table class="nkh-table">
+                            <tbody>
+                                <tr th:each="nkh : ${deTaiKH.nhaKhoaHocs}">
+                                    <td class="checkbox-cell"></td>
+                                    <td class="name-cell">
+                                        <span th:text="${nkh.hoTen}" class="nkh-name"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <a th:href="@{/quanlykhoahoc/detai/edit/{id}(id=${deTaiKH.deTaiId})}" class="edit-btn">Chỉnh sửa</a>
+                    <a th:href="@{/quanlykhoahoc/detai}" class="cancel-btn">Quay lại</a>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

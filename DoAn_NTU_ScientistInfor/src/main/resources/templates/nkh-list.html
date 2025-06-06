@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSDL KHCN</title>
+    <link rel="stylesheet" th:href="@{/css/nkh_list.css}">
+    <style>
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        .modal-content h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .modal-content p {
+            margin-bottom: 20px;
+            color: #555;
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .modal-confirm, .modal-cancel {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        .modal-confirm {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .modal-confirm:hover {
+            background-color: #c0392b;
+        }
+        .modal-cancel {
+            background-color: #7f8c8d;
+            color: white;
+        }
+        .modal-cancel:hover {
+            background-color: #6c7a89;
+        }
+        /* Updated delete button style */
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+        .delete-btn:hover {
+            background-color: #c0392b;
+            text-decoration: none;
+        }
+        /* Message styles */
+        .message {
+            padding: 10px;
+            margin: 20px 0;
+            border-radius: 6px;
+            font-size: 14px;
+            text-align: center;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        
+        @media (max-width: 768px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        min-height: auto;
+    }
+
+    .container {
+        flex-direction: column;
+    }
+
+    .main {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .researcher-container {
+        grid-template-columns: 1fr;
+    }
+
+    .search-container {
+        flex-direction: column;
+        align-items: stretch;
+        max-width: 100%;
+        background: white;
+        position: static;
+                 
+    }
+    
+    .banner img{
+    display: none;
+    }
+}
+        
+                
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Fragment side bar -->
+        <div th:insert="fragments/sidebar :: sidebar"></div>
+        <!-- Main content -->
+        <main class="main">
+            <h1>Cơ sở dữ liệu Khoa học Công nghệ</h1>
+            <div>
+                 <div th:insert="fragments/banner :: banner"></div>
+                <!-- Topbar -->
+                
+            </div>
+            <div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div>
+            <div th:if="${errorMessage}" class="message error" th:text="${errorMessage}"></div>
+            <form th:action="@{/quanlykhoahoc/nkh/search}" method="get" class="search-container">
+                <h2><strong>Tìm Kiếm <span style="color:deeppink;">Nhà khoa học</span></strong></h2>
+                <input type="text" class="search-input" name="keyword" th:value="${keyword}" placeholder="🔍 Nhập từ khóa..." aria-label="Tìm kiếm nhà khoa học">
+                <select class="search-select" name="hocVi">
+                    <option value="" th:selected="${hocVi == null or hocVi == ''}">🔽 Chọn học vị</option>
+                    <option value="Tiến sĩ" th:selected="${hocVi == 'Tiến sĩ'}">Tiến sĩ</option>
+                    <option value="Thạc sĩ" th:selected="${hocVi == 'Thạc sĩ'}">Thạc sĩ</option>
+                </select>
+                <button type="submit" class="search-button">🔍 Tìm Kiếm</button>
+            </form>
+            <div class="content">
+                <div class="result-header">
+                    <div class="result-title">
+                        <h2>DỮ LIỆU NHÀ KHOA HỌC</h2>
+                        <div class="underline"></div>
+                    </div>
+                    <div class="result-info">
+                    <a th:href="@{/quanlykhoahoc/nkh/add}" style="text-decoration: none;"  sec:authorize="hasAuthority('Admin')">
+	                    <button class="export-btn">
+	                            <i class="fa fa-file-excel-o"></i> Thêm nhà khoa học
+	                        </button>
+                    </a>
+                        
+                    </div>
+                </div>
+                <div class="researcher-container">
+                    <div class="researcher-card" th:each="nkh : ${nkhList}">
+                        <img th:src="${nkh.hinhAnh != null and nkh.hinhAnh != 'NULL' ? nkh.hinhAnh : '/img/picdefault.jpg'}" alt="avatar" class="avatars">
+                        <div class="info">
+                            <h3 class="name" th:text="${nkh.hoTen}"></h3>
+                            <p class="title" th:text="${nkh.hocVi}"></p>
+                            <p><strong>Ngành đào tạo:</strong> <span th:text="${nkh.nganhDaoTao}"></span></p>
+                            <p><strong>Chuyên ngành đào tạo:</strong> <span th:text="${nkh.chuyenMon}"></span></p>
+                            
+                            <a th:href="@{/quanlykhoahoc/nkh/edit/{id}(id=${nkh.id})}" class="detail-button" sec:authorize="hasAuthority('Admin')">Sửa</a>
+                            <button class="delete-btn" th:attr="data-id=${nkh.id}" onclick="showDeleteModal(this)" sec:authorize="hasAuthority('Admin')">Xóa</button>
+                            <a th:href="@{/quanlykhoahoc/nkh/{id}/detail(id=${nkh.id})}" class="detail-button" style="text-decoration: none;">Chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <h3>Xác nhận xóa nhà khoa học</h3>
+            <p>Bạn có chắc chắn muốn xóa nhà khoa học "<span id="nkhName"></span>"?</p>
+            <div class="modal-buttons">
+                <button class="modal-confirm" onclick="confirmDelete()">Xác nhận</button>
+                <button class="modal-cancel" onclick="closeDeleteModal()">Hủy</button>
+            </div>
+        </div>
+    </div>
+    <!-- Hidden form for deletion -->
+    <form id="deleteForm" th:action="@{/quanlykhoahoc/nkh/delete/{id}(id='')}" method="get" style="display: none;">
+        <input type="hidden" name="id" id="deleteNkhId" />
+    </form>
+    <!-- Fragment footer -->
+    <div th:insert="fragments/footer :: footer"></div>
+    <script>
+    let currentNkhId = null;
+    let currentNkhName = null;
+
+    function showDeleteModal(button) {
+        currentNkhId = button.getAttribute('data-id');
+        currentNkhName = button.closest('.researcher-card').querySelector('.name').textContent;
+        document.getElementById('nkhName').textContent = currentNkhName;
+        document.getElementById('deleteModal').style.display = 'flex';
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').style.display = 'none';
+        currentNkhId = null;
+        currentNkhName = null;
+    }
+
+    function confirmDelete() {
+        if (currentNkhId) {
+            const form = document.getElementById('deleteForm');
+            form.action = `/quanlykhoahoc/nkh/delete/${currentNkhId}`;
+            document.getElementById('deleteNkhId').value = currentNkhId;
+            form.submit();
+        }
+        closeDeleteModal();
+    }
+
+    document.getElementById('deleteModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeDeleteModal();
+        }
+    });
+</script>
+</body>
+</html>

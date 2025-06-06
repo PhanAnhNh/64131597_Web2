@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thống kê đề tài khoa học</title>
+    <link rel="stylesheet" th:href="@{/css/thongkeNKH.css}" />
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div th:insert="fragments/sidebar :: sidebar"></div>
+        <!-- Main content -->
+        <main class="main">
+            <h1>Cơ sở dữ liệu Khoa học Công nghệ</h1>
+            <div th:insert="fragments/banner :: banner"></div>
+            <div class="article-page">
+                <div class="article-header">
+                    <h2>THỐNG KÊ DỮ LIỆU ĐỀ TÀI KHOA HỌC CÔNG NGHỆ</h2>
+                    <div class="underline"></div>
+                </div>
+              
+                <table id="table-tong-hop">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Đơn vị chủ trì</th>
+                            <th th:each="capDeTai : ${T(Nhom2.DoAnWeb.NTUScientistInfor.model.DetaiKHEntitty$CapDeTai).values()}" 
+                                th:text="${capDeTai.toString()}"></th>
+                            <th>Tổng cộng</th>
+                            <th>Ghi chú</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="row : ${thongKeDeTai}">
+                            <td th:text="${row.stt} ?: '-'"></td>
+                            <td th:text="${row.donViChuTri}"></td>
+                            <td th:each="capDeTai : ${T(Nhom2.DoAnWeb.NTUScientistInfor.model.DetaiKHEntitty$CapDeTai).values()}" 
+                                th:text="${row[capDeTai.toString()] ?: '-'}"></td>
+                            <td th:text="${row.tongCong} ?: '-'"></td>
+                            <td th:text="${row.ghiChu} ?: ''"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </main>
+
+
+    </div>
+    <div th:insert="fragments/footer :: footer"></div>
+
+</body>
+
+</html>

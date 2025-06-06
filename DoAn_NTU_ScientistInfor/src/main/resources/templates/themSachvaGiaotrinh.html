@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm sách và giáo trình</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            display: flex;
+        }
+        .sidebar {
+            width: 270px;
+            background: #102c57;
+            color: white;
+            min-height: 100vh;
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: fixed;
+        }
+        .sidebar .logo {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .sidebar nav a {
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .sidebar nav a:hover,
+        .sidebar nav a.active {
+            background-color: #1f4172;
+        }
+        .dropdown {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .dropdown-toggle {
+            background: none;
+            border: none;
+            color: white;
+            text-align: left;
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .dropdown-toggle:hover {
+            background-color: #1f4172;
+        }
+        .dropdown-menu {
+            display: none;
+            flex-direction: column;
+            background-color: #1f4172;
+            border-radius: 8px;
+            margin-left: 10px;
+            margin-top: 4px;
+        }
+        .dropdown-menu a {
+            padding: 10px 15px;
+            text-decoration: none;
+            color: white;
+            border-radius: 6px;
+            transition: background 0.3s;
+            font-size: 13px;
+        }
+        .dropdown-menu a:hover {
+            background-color: #3b5ea0;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: flex;
+        }
+        .main {
+            margin-left: 270px;
+            padding: 40px;
+            flex: 1;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            border-left: 6px solid #e74c3c;
+            padding-left: 12px;
+        }
+        .input-form {
+            width: 100%;
+        }
+        .form-row {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            background-color: #f0f0f0;
+        }
+        .form-row label {
+            width: 220px;
+            font-weight: 600;
+            color: #555;
+            padding-right: 15px;
+            background-color: #fafafa;
+            padding: 12px 15px;
+        }
+        .form-row input,
+        .form-row textarea,
+        .form-row select {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        .form-row textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .form-row select {
+            appearance: none;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        .form-row input[readonly] {
+            background-color: #f0f0f0;
+            cursor: not-allowed;
+        }
+        .button-group {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .save-btn,
+        .cancel-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        .save-btn {
+            background-color: #2ecc71;
+            color: white;
+        }
+        .save-btn:hover {
+            background-color: #27ae60;
+        }
+        .cancel-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .cancel-btn:hover {
+            background-color: #c0392b;
+        }
+        a {
+            color: #2980b9;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #1d6fa5;
+        }
+        .author-dropdown {
+            flex: 1;
+            position: relative;
+        }
+        .author-display {
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 10px;
+            font-size: 14px;
+            background-color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 38px;
+        }
+        .author-display::after {
+            content: '▼';
+            font-size: 12px;
+            color: #555;
+        }
+        .author-display.empty {
+            color: #999;
+        }
+        .author-list {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: #fff;
+            z-index: 10;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .author-list.open {
+            display: block;
+        }
+        .author-item {
+            padding: 8px 10px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        .author-item:hover {
+            background-color: #f5f5f5;
+        }
+        .author-item.selected {
+            background-color: #2ecc71;
+            color: white;
+            font-weight: 600;
+        }
+        .selected-authors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .selected-author {
+            background-color: #2ecc71;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                flex-direction: row;
+                overflow-x: auto;
+                min-height: auto;
+            }
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+            .container {
+                padding: 20px;
+            }
+            .form-row {
+                flex-direction: column;
+            }
+            .form-row label {
+                width: 100%;
+                background: #f1f1f1;
+            }
+            .form-row input,
+            .form-row textarea,
+            .form-row select,
+            .author-dropdown {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div th:insert="fragments/sidebar :: sidebar"></div>
+    <main class="main">
+        <div class="container">
+            <h2>THÊM SÁCH VÀ GIÁO TRÌNH</h2>
+            <form class="input-form" th:action="@{/quanlykhoahoc/giaotrinh/them-sach}" th:object="${sach}" method="post">
+                <div class="form-row">
+                    <label for="id">Mã sách:</label>
+                    <input type="text" id="id" th:field="*{id}" readonly required />
+                </div>
+                <div class="form-row">
+                    <label for="tenSach">Tên sách:</label>
+                    <textarea id="tenSach" th:field="*{tenSach}" placeholder="Nhập tên sách" required></textarea>
+                </div>
+                <div class="form-row">
+                    <label for="tacGiaIds">Tác giả:</label>
+                    <div class="author-dropdown">
+                        <div class="author-display empty">
+                            <span class="selected-authors"></span>
+                            <span class="placeholder">Chọn tác giả...</span>
+                        </div>
+                        <div class="author-list">
+                            <div th:each="nkh : ${danhSachNhaKhoaHoc}"
+                                 class="author-item"
+                                 th:data-id="${nkh.id}"
+                                 th:data-name="${nkh.hoTen}"
+                                 th:text="${nkh.hoTen}"></div>
+                        </div>
+                        <input type="hidden" id="tacGiaIds" name="tacGiaIds" value="" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label for="loaiSach">Loại sách:</label>
+                    <select id="loaiSach" th:field="*{loaiSach}" onchange="updateSachId()" required>
+                        <option value="">-- Chọn loại sách --</option>
+                        <option th:each="loai : ${loaiSachList}"
+                                th:value="${loai}"
+                                th:text="${#strings.replace(loai, '_', ' ')}"></option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="namXuatBan">Năm xuất bản:</label>
+                    <input type="date" id="namXuatBan" th:field="*{namXuatBan}" required />
+                </div>
+                <div class="form-row">
+                    <label for="nhaXuatBan">Nhà xuất bản:</label>
+                    <select id="nhaXuatBan" th:field="*{nhaXuatBan}" required>
+                        <option value="">-- Chọn nhà xuất bản --</option>
+                        <option th:each="nxb : ${nhaXuatBanList}"
+                                th:value="${nxb}"
+                                th:text="${#strings.replace(nxb, '_', ' ')}"></option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="save-btn">Lưu</button>
+                    <a th:href="@{/quanlykhoahoc/giaotrinh}" class="cancel-btn">Hủy</a>
+                </div>
+            </form>
+        </div>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function updateSachId() {
+            const loaiSach = document.getElementById('loaiSach').value;
+            if (loaiSach) {
+                fetch('/quanlykhoahoc/giaotrinh/generate-sach-id?loaiSach=' + encodeURIComponent(loaiSach))
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('id').value = data;
+                    })
+                    .catch(error => console.error('Error fetching ID:', error));
+            }
+        }
+
+        $(document).ready(function () {
+            $('.author-display').on('click', function (e) {
+                e.stopPropagation();
+                $('.author-list').toggleClass('open');
+            });
+
+            $('.author-item').on('click', function (e) {
+                e.stopPropagation();
+                $(this).toggleClass('selected');
+                updateSelectedAuthors();
+                $('.author-list').removeClass('open');
+            });
+
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('.author-dropdown').length) {
+                    $('.author-list').removeClass('open');
+                }
+            });
+
+            function updateSelectedAuthors() {
+                let selectedItems = $('.author-item.selected');
+                let selectedIds = selectedItems.map(function () {
+                    return $(this).data('id');
+                }).get();
+                let selectedNames = selectedItems.map(function () {
+                    return $(this).data('name');
+                }).get();
+
+                $('#tacGiaIds').val(selectedIds.join(','));
+
+                let $display = $('.selected-authors');
+                $display.empty();
+                if (selectedNames.length > 0) {
+                    selectedNames.forEach(function (name) {
+                        $display.append(`<span class="selected-author">${name}</span>`);
+                    });
+                    $('.author-display').removeClass('empty');
+                    $('.placeholder').hide();
+                } else {
+                    $('.author-display').addClass('empty');
+                    $('.placeholder').show();
+                }
+            }
+
+            updateSelectedAuthors();
+
+            $('.input-form').on('submit', function (e) {
+                if ($('.author-item.selected').length === 0) {
+                    e.preventDefault();
+                    alert('Vui lòng chọn ít nhất một tác giả.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - CSDL KHCN</title>
+    <link rel="stylesheet" th:href="@{/css/sohuutritue.css}" />
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div th:insert="fragments/sidebar :: sidebar"></div>
+
+        <!-- Main content -->
+        <main class="main">
+            <h1>Cơ sở dữ liệu Khoa học Công nghệ</h1>
+            <div th:insert="fragments/banner :: banner"></div>
+            <div class="search-container">
+                <h2><strong>Tìm Kiếm <span style="color:deeppink;">Dữ Liệu</span></strong></h2>
+                <form th:action="@{/quanlykhoahoc/sohuutritue}" method="get">
+                    <input type="text" class="search-input" name="keyword" placeholder="🔍 Nhập tên bằng hoặc tác giả..." th:value="${keyword}">
+                    <button type="submit" class="search-button">🔍 Tìm Kiếm</button>
+                </form>
+            </div>
+
+            <div class="article-page">
+                <div class="article-header">
+                    <div>
+                        <h2>DỮ LIỆU SỞ HỮU TRÍ TUỆ</h2>
+                        <div class="underline"></div>
+                    </div>
+                    <a th:href="@{/quanlykhoahoc/add-shtt}" class="add-btn" sec:authorize="hasAnyAuthority('Admin', 'NKH')">Thêm Sở Hữu Trí Tuệ</a>
+                </div>
+
+                <div class="article-container">
+                    <div th:each="shtt : ${shttList}" class="article-card">
+                        <a>
+                            <h3 th:text="${shtt.tenBang}"></h3>
+                        </a>
+                        <p><strong>Năm:</strong> <span th:text="${shtt.namCap != null ? #dates.format(shtt.namCap, 'yyyy') : 'N/A'}"></span></p>
+                        <p><strong>Tổ chức cấp văn bằng:</strong> <span th:text="${shtt.toChucCap}"></span></p>
+                        <p><strong>Nội dung:</strong> <span th:text="${shtt.noiDung}"></span></p>
+                        <p><strong>Tác giả:</strong>
+                            <span th:if="${shtt.nhanSHTT.isEmpty()}">Không có tác giả</span>
+                            <span th:each="nshtt, iterStat : ${shtt.nhanSHTT}" 
+                                  th:text="${nshtt.nhaKhoaHoc?.hoTen} + (${iterStat.last} ? '' : ', ')"></span>
+                        </p>
+                        <div class="bottom-row">
+                            <form th:action="@{/quanlykhoahoc/xoa-shtt/{id}(id=${shtt.id})}" method="post" style="display:inline;">
+                                <button type="submit" class="details-btn" onclick="return confirm('Bạn có chắc muốn xóa sở hữu trí tuệ này?')" sec:authorize="hasAnyAuthority('Admin')">Xóa</button>
+                            </form>
+                            <a th:href="@{/quanlykhoahoc/edit-shtt/{id}(id=${shtt.id})}" class="details-btn" sec:authorize="hasAnyAuthority('Admin')">Sửa</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

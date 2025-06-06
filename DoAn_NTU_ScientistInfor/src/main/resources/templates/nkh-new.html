@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm nhà khoa học</title>
+    <!-- Liên kết CSS -->
+    <link rel="stylesheet" th:href="@{/css/nkh_add.css}">
+</head>
+<body>
+<!-- Fragment side bar -->
+    <div th:insert="fragments/sidebar :: sidebar"></div>
+
+    <main class="main">
+        <div class="container">
+            <h2>THÊM NHÀ KHOA HỌC</h2>
+            <div th:if="${successMessage}" class="alert alert-success">
+                <span th:text="${successMessage}"></span>
+            </div>
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <span th:text="${errorMessage}"></span>
+            </div>
+            <form class="input-form" id="inputForm" th:action="@{/quanlykhoahoc/nhakhoahoc/add}" th:object="${nkh}" method="post" enctype="multipart/form-data">
+                <div class="form-row">
+                    <label for="nkhId">Mã số:</label>
+                    <input type="text" id="nkhId" th:field="*{id}" placeholder="Nhập mã số (VD: 301)" required>
+                </div>
+                <div class="form-row">
+                    <label for="taiKhoan">Tên tài khoản:</label>
+                    <select id="taiKhoan" th:field="*{tenTaiKhoan}" aria-label="Chọn tên tài khoản" required>
+                        <option value="" disabled selected>-- Chọn tài khoản --</option>
+                        <option th:each="tk : ${taiKhoanList}" th:value="${tk.tenTaiKhoan}" th:text="${tk.tenTaiKhoan}"></option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="hoTen">Họ và tên:</label>
+                    <input type="text" id="hoTen" th:field="*{hoTen}" placeholder="Nhập họ và tên (VD: Nguyễn Văn A)" required>
+                </div>
+                <div class="form-row">
+                    <label>Giới tính:</label>
+                    <div class="checkbox-group">
+                        <label><input type="radio" th:field="*{gioiTinh}" value="Nam" checked>Nam</label>
+                        <label><input type="radio" th:field="*{gioiTinh}" value="Nữ">Nữ</label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label for="namSinh">Năm sinh:</label>
+                    <input type="text" id="namSinh" th:field="*{namSinh}" placeholder="Nhập năm sinh (VD: 1978)" required>
+                </div>
+                <div class="form-row">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" th:field="*{email}" placeholder="Nhập email (VD: example@ntu.edu.vn)" required>
+                </div>
+                <div class="form-row">
+                    <label for="hocVi">Học vị:</label>
+                    <input type="text" id="hocVi" th:field="*{hocVi}" placeholder="Nhập học vị (VD: Tiến sĩ)" required>
+                </div>
+                <div class="form-row">
+                    <label for="nganhDaoTao">Ngành đào tạo:</label>
+                    <input type="text" id="nganhDaoTao" th:field="*{nganhDaoTao}" placeholder="Nhập ngành đào tạo (VD: Công nghệ thông tin)" required>
+                </div>
+                <div class="form-row">
+                    <label for="linhVucNghienCuu">Lĩnh vực nghiên cứu:</label>
+                    <textarea id="linhVucNghienCuu" th:field="*{linhVucNghienCuu}" placeholder="Nhập lĩnh vực nghiên cứu (VD: Học máy, Khoa học dữ liệu)" required></textarea>
+                </div>
+                <div class="form-row">
+                    <label for="chuyenMon">Chuyên môn:</label>
+                    <input type="text" id="chuyenMon" th:field="*{chuyenMon}" placeholder="Nhập chuyên môn (VD: Kỹ thuật phần mềm)" required>
+                </div>
+                <div class="form-row">
+                    <label for="hinhAnh">Ảnh đại diện:</label>
+                    <input type="file" id="hinhAnh" name="hinhAnhFile" accept="image/*">
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="save-btn">Lưu</button>
+                    <a th:href="@{/quanlykhoahoc/nhakhoahoc}" class="cancel-btn">Hủy</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
