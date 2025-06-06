@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Danh sách bác sĩ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #6366f1;
+            --background-color: #f0f4f8;
+            --text-color: #1f2937;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        header {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .logo {
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #e0e0e0;
+        }
+
+        .mid h1 {
+            text-align: center;
+            color: brown;
+            padding: 20px;
+        }
+
+        .banner img {
+            width: 100%;
+            position: relative;
+        }
+
+        .banner h1 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 40px;
+            font-weight: 600;
+            text-align: center;
+            padding: 0 20px;
+            max-width: 90%;
+        }
+
+        .doctor-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            width: 80vw;
+            margin-left: 10vw;
+            gap: 10px;
+        }
+
+        .doctor-card {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 260px;
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .doctor-image {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+
+        .doctor-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 15px;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+        }
+
+        .doctor-name {
+            font-weight: bold;
+            font-size: 17px;
+            color: #003366;
+        }
+
+        .doctor-specialty,
+        .doctor-price,
+        .doctor-role,
+        .doctor-qualifications,
+        .doctor-workinghours {
+            font-size: 14px;
+            margin: 5px 0;
+            color: #444;
+        }
+
+        .btn-consult {
+            display: inline-block;
+            background-color: #00aaff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .btn-consult:hover {
+            background-color: #008ecc;
+        }
+
+        footer {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); /* Màu xanh dương nhạt phù hợp với bệnh viện */
+            padding: 50px 20px;
+            font-family: 'Roboto', Arial, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        footer h4 {
+            margin-bottom: 15px;
+            color: #ffffff; /* Màu xanh đậm nhẹ cho tiêu đề */
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        footer p, footer a {
+            font-size: 14px;
+            color: #ffffff; /* Màu xám đậm nhẹ nhàng */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #007BFF; /* Màu xanh dương sáng khi hover */
+            text-decoration: underline;
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .footer-section {
+            flex: 1 1 200px;
+            margin-bottom: 20px;
+        }
+
+        .footer-section img.logo {
+            width: 150px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .footer-section img.logo:hover {
+            transform: scale(1.05); /* Hiệu ứng phóng to nhẹ khi hover */
+        }
+        
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .footer-container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .footer-section {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+    <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div th:insert="~{fragments/header :: header}"></div>
+    <section class="banner">
+        <img th:src="@{/images/285867aaa8b681b.jpg}" alt="Banner Image" />
+        <h1>Giải pháp đặt lịch khám bệnh thông minh - Nhanh chóng, An toàn & Tiện lợi</h1>
+    </section>
+    <div class="mid">
+        <h1>Đội ngũ bác sĩ</h1>
+    </div>
+    <div class="doctor-list">
+        <div th:each="doctor : ${doctors}" class="doctor-card">
+            <img th:if="${doctor.profileImage != null}" th:src="@{${doctor.profileImage}}" alt="Doctor Image" class="doctor-image" />
+            <img th:unless="${doctor.profileImage != null}" th:src="@{/default-doctor.png}" alt="Default Doctor Image" class="doctor-image" />
+            <div class="doctor-stats">
+                <span>Đánh giá: <strong>4.5</strong> ⭐</span>
+                <span>Lượt khám: <strong>50</strong> 👤</span>
+            </div>
+            <h3 class="doctor-name" th:text="${doctor.fullname}">Bác sĩ</h3>
+            <p th:if="${doctor.department != null}" class="doctor-specialty" th:text="${doctor.department}">Chuyên khoa</p>
+            <p th:if="${doctor.qualifications != null}" class="doctor-qualifications" th:text="${doctor.qualifications}">Trình độ</p>
+            <p th:if="${doctor.workinghours != null}" class="doctor-workinghours" th:text="${doctor.workinghours}">Giờ làm việc</p>
+            <p class="doctor-role" th:text="${doctor.qualifications}">🏥</p>
+            <a th:href="@{/phong-kham-vi-suc-khoe/bac-si/{id}(id=${doctor.doctorid})}" class="btn-consult">Chi tiết</a>
+        </div>
+    </div>
+    <div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

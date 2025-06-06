@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Footer Fragment</title>
+</head>
+<body>
+    <footer th:fragment="footer">
+        <div class="footer-container">
+            <!-- Logo -->
+            <div class="footer-section">
+                <img src="/images/Screenshot 2025-06-07 015510.png" alt="HealthCarePro Logo" class="logo" style="width: 250px; ">
+                <p>© 2025 HealthCarePro. All rights reserved.</p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-section">
+                <h4>Liên kết nhanh</h4>
+                <ul>
+                    <li><a href="/">Trang chủ</a></li>
+                    <li><a href="/about">Giới thiệu</a></li>
+                    <li><a href="/services">Dịch vụ</a></li>
+                    <li><a href="/appointment">Đặt lịch khám</a></li>
+                    <li><a href="/contact">Liên hệ</a></li>
+                </ul>
+            </div>
+
+            <!-- Clinic Address -->
+            <div class="footer-section">
+                <h4>Địa chỉ phòng khám</h4>
+                <p>123 Đường Sức Khỏe, P. Bình An, Q.1<br>TP. Hồ Chí Minh, Việt Nam</p>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="footer-section">
+                <h4>Liên hệ</h4>
+                <p>Hotline: <strong>1900 888 999</strong></p>
+                <p>Email: <a href="mailto:support@healthcarepro.vn">support@healthcarepro.vn</a></p>
+            </div>
+
+            <!-- Working Hours -->
+            <div class="footer-section">
+                <h4>Lịch làm việc</h4>
+                <p>Thứ 2 - Thứ 7: 7h00 - 20h00<br>Chủ nhật: 8h00 - 17h00</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

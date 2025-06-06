@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Header Fragment</title>
+    
+</head>
+<body>
+    <header th:fragments="header">
+        <div class="logo">🩺 HealthCarePro</div>
+        <nav>
+            <ul>
+                <li><a th:href="@{/phong-kham-vi-suc-khoe/trangchu}">Trang chủ</a></li>
+                <li><a th:href="@{/phong-kham-vi-suc-khoe/dich-vu}">Dịch vụ</a></li>
+                <li><a th:href="@{/phong-kham-vi-suc-khoe/dat-lich-kham}">Đặt lịch</a></li>
+                <li><a th:href="@{/phong-kham-vi-suc-khoe/tin-tuc}">Tin tức</a></li>
+                <li><a th:href="@{/phong-kham-vi-suc-khoe/lien-he}">Liên hệ</a></li>
+             </ul>
+        </nav>
+    </header>
+    
+</body>
+</html>

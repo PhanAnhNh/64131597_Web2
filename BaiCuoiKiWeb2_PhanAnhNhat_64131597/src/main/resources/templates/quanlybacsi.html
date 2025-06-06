@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trang chủ - Đặt lịch khám bệnh</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #6366f1;
+            --background-color: #f0f4f8;
+            --text-color: #1f2937;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        /* Header */
+        .header {
+            background:linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-top .logo {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-right: 7vw;
+        }
+
+        .main-nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+            padding: 0;
+            gap: 5vw;
+            margin-top: 0.7vw;
+        }
+
+        .main-nav ul li {
+            margin: 0 15px;
+        }
+
+        .main-nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .main-nav ul li a:hover {
+            color: #e0e0e0;
+        }
+
+        .logout-link a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .logout-link a:hover {
+            color: #e0e0e0;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Nội dung */
+
+        .content {
+            width: 90vw;
+            margin-left: 5vw;
+        }
+
+        .action-bar {
+            text-align: right;
+            margin-bottom: 15px;
+        }
+
+        .action-bar button {
+            background-color: #4f46e5;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .action-bar button:hover {
+            background-color: #4338ca;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        th,
+        td {
+            padding: 16px;
+            text-align: center;
+            border-bottom: 1px solid #7a7878;
+        }
+
+        th {
+            background-color: #f0f4f8;
+            color: #374151;
+        }
+
+        td {
+            color: #4b5563;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            margin: 0 4px;
+        }
+
+        .btn-edit {
+            background-color: #facc15;
+            color: #1f2937;
+        }
+
+        .btn-edit:hover {
+            background-color: #eab308;
+        }
+
+        .btn-delete {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #dc2626;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); /* Màu xanh dương nhạt phù hợp với bệnh viện */
+            padding: 50px 20px;
+            font-family: 'Roboto', Arial, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        footer h4 {
+            margin-bottom: 15px;
+            color: #ffffff; /* Màu xanh đậm nhẹ cho tiêu đề */
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        footer p, footer a {
+            font-size: 14px;
+            color: #ffffff; /* Màu xám đậm nhẹ nhàng */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #007BFF; /* Màu xanh dương sáng khi hover */
+            text-decoration: underline;
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .footer-section {
+            flex: 1 1 200px;
+            margin-bottom: 20px;
+        }
+
+        .footer-section img.logo {
+            width: 150px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .footer-section img.logo:hover {
+            transform: scale(1.05); /* Hiệu ứng phóng to nhẹ khi hover */
+        }
+        
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .footer-container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .footer-section {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+
+    <!-- Icons (Font Awesome CDN) -->
+    <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div th:insert="~{fragments/menu :: menu}"></div>
+    <!-- Thêm vào sau phần .banner và trước .content -->
+    <section style="background-color: #ffffff; padding: 60px 20px;">
+        <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
+            <h2 style="color: #4f46e5; margin-bottom: 20px;">Trang quản lý</h2>
+            <p style="font-size: 16px; line-height: 1.7; color: #374151;">
+                HealthCarePro là hệ thống đặt lịch khám bệnh hiện đại, kết nối trực tiếp người bệnh với đội ngũ y bác sĩ
+                giàu kinh nghiệm.
+                Chúng tôi cam kết mang đến trải nghiệm y tế thuận tiện, an toàn và tiết kiệm thời gian.
+            </p>
+        </div>
+    </section>
+
+    <section class="content">
+        <h2>Danh sách bác sĩ</h2>
+
+        <div class="action-bar">
+            <a th:href="@{/bac-si-phong-kham/them-bac-si}"><button>+ Thêm bác sĩ</button></a>
+            <a th:href="@{/bac-si-phong-kham/dang-ky}"><button>+ Đăng kí bác sĩ</button></a>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Họ tên</th>
+                    <th>Chuyên khoa</th>
+                    <th>Số điện thoại</th>
+                    <th>Email</th>
+                    <th>Hoạt động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="doctor, iterStat : ${doctors}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${doctor.fullname}"></td>
+                    <td th:text="${doctor.department}"></td>
+                    <td th:text="${doctor.phone}"></td>
+                    <td th:text="${doctor.email}"></td>
+                    <td>
+                        <button class="btn btn-view"><a th:href="@{/bac-si-phong-kham/chi-tiet-bac-si(id=${doctor.doctorid})}">Xem</a></button>
+                        <button class="btn btn-edit"><a th:href="@{/bac-si-phong-kham/sua-bac-si(id=${doctor.doctorid})}">Sửa</a></button>
+                        <button class="btn btn-delete"><a th:href="@{/bac-si-phong-kham/xoa-bac-si(id=${doctor.doctorid})}" class="btn-action btn-delete" onclick="return confirm('Bạn có chắc chắn muốn xóa bác sĩ này?')">Xóa</a></button>
+                    </td>
+                </tr>
+                <tr th:if="${doctors.isEmpty()}">
+                    <td colspan="6">Không có bác sĩ nào.</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Footer -->
+    <div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+
+</html>

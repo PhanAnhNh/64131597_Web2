@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đặt lịch khám bệnh</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #6366f1;
+            --background-color: #f0f4f8;
+            --text-color: #1f2937;
+            --card-bg: #ffffff;
+            --error-color: #dc2626;
+            --success-color: #16a34a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            color: var(--text-color);
+            background-image: url('/images/H2.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
+            margin-bottom: 22vw;
+        }
+
+        header {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .logo {
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #e0e0e0;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 40px;
+        }
+
+        .form-container {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            margin-left: 10vw;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            background: #f9fafb;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 14px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .success-message {
+            color: var(--success-color);
+            font-size: 14px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .field-error {
+            color: var(--error-color);
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--secondary-color);
+        }
+
+        footer {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); /* Màu xanh dương nhạt phù hợp với bệnh viện */
+            padding: 50px 20px;
+            font-family: 'Roboto', Arial, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        footer h4 {
+            margin-bottom: 15px;
+            color: #ffffff; /* Màu xanh đậm nhẹ cho tiêu đề */
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        footer p, footer a {
+            font-size: 14px;
+            color: #ffffff; /* Màu xám đậm nhẹ nhàng */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #007BFF; /* Màu xanh dương sáng khi hover */
+            text-decoration: underline;
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .footer-section {
+            flex: 1 1 200px;
+            margin-bottom: 20px;
+        }
+
+        .footer-section img.logo {
+            width: 150px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .footer-section img.logo:hover {
+            transform: scale(1.05); /* Hiệu ứng phóng to nhẹ khi hover */
+        }
+        
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .footer-container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .footer-section {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+    <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div th:insert="~{fragments/header :: header}"></div>
+    <main class="main-content">
+        <div class="form-container">
+            <h1>Đặt lịch khám bệnh</h1>
+            <div th:if="${error}" class="error-message" th:text="${error}"></div>
+            <div th:if="${message}" class="success-message" th:text="${message}"></div>
+            <form th:object="${appointmentRequest}" th:action="@{/phong-kham-vi-suc-khoe/dat-lich-kham}" method="POST">
+                <div class="form-group">
+                    <label for="fullName">Họ và tên:</label>
+                    <input type="text" id="fullName" th:field="*{fullName}" required />
+                    <div th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}" class="field-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Giới tính:</label>
+                    <select id="gender" th:field="*{gender}" required>
+                        <option value="">-- Chọn giới tính --</option>
+                        <option value="nam">Nam</option>
+                        <option value="nữ">Nữ</option>
+                        <option value="khác">Khác</option>
+                    </select>
+                    <div th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="field-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Số điện thoại:</label>
+                    <input type="tel" id="phone" th:field="*{phone}" pattern="[0-9]{10}" required
+                           title="Số điện thoại phải có 10 chữ số" />
+                    <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="field-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" th:field="*{email}" />
+                    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="field-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="address">Địa chỉ:</label>
+                    <input type="text" id="address" th:field="*{address}" />
+                    <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="field-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="doctorId">Chọn bác sĩ:</label>
+                    <select id="doctorId" th:field="*{doctorId}" required>
+                        <option value="">-- Chọn bác sĩ --</option>
+                        <option th:each="doctor : ${doctors}"
+                                th:value="${doctor.doctorid}"
+                                th:text="${doctor.fullname + ' (' + doctor.department + ')'}"></option>
+                    </select>
+                    <div th:if="${#fields.hasErrors('doctorId')}" th:errors="*{doctorId}" class="field-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="appointmentDate">Chọn ngày giờ:</label>
+                    <input type="datetime-local" id="appointmentDate" th:field="*{appointmentDate}" required
+                           th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd''T''HH:mm')}" />
+                    <div th:if="${#fields.hasErrors('appointmentDate')}" th:errors="*{appointmentDate}" class="field-error"></div>
+                </div>
+                <button type="submit" class="btn-submit">📩 Đặt lịch khám</button>
+            </form>
+        </div>
+    </main>
+    <div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

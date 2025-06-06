@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sửa thông tin bệnh nhân - Đặt lịch khám bệnh</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #6366f1;
+            --background-color: #f0f4f8;
+            --text-color: #1f2937;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-top .logo {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-right: 7vw;
+        }
+
+        .main-nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+            padding: 0;
+            gap: 5vw;
+            margin-top: 0.7vw;
+        }
+
+        .main-nav ul li {
+            margin: 0 15px;
+        }
+
+        .main-nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .main-nav ul li a:hover {
+            color: #e0e0e0;
+        }
+
+        .logout-link a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .logout-link a:hover {
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+        }
+
+        .info-group {
+            margin-bottom: 20px;
+        }
+
+        .info-group label {
+            font-weight: 600;
+            color: #4b5563;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .info-group input,
+        .info-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .info-group select {
+            appearance: none;
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQgNUw4IDlMMTIgNSIgc3Ryb2tlPSIjNEI1NTYzIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K') no-repeat right 10px center;
+            background-size: 12px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+
+        .btn.back {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn.back:hover {
+            background-color: #d1d5db;
+        }
+
+        .btn.save {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn.save:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); /* Màu xanh dương nhạt phù hợp với bệnh viện */
+            padding: 50px 20px;
+            font-family: 'Roboto', Arial, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        footer h4 {
+            margin-bottom: 15px;
+            color: #ffffff; /* Màu xanh đậm nhẹ cho tiêu đề */
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        footer p, footer a {
+            font-size: 14px;
+            color: #ffffff; /* Màu xám đậm nhẹ nhàng */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #007BFF; /* Màu xanh dương sáng khi hover */
+            text-decoration: underline;
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .footer-section {
+            flex: 1 1 200px;
+            margin-bottom: 20px;
+        }
+
+        .footer-section img.logo {
+            width: 150px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .footer-section img.logo:hover {
+            transform: scale(1.05); /* Hiệu ứng phóng to nhẹ khi hover */
+        }
+        
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .footer-container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .footer-section {
+                flex: 1 1 100%;
+            }
+        }
+
+        .error {
+            color: #ef4444;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <!-- Icons (Font Awesome CDN) -->
+    <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- Header -->
+     <div th:insert="~{fragments/menu :: menu}"></div>
+
+    <div class="container">
+        <h2>Sửa thông tin bệnh nhân</h2>
+        <div th:if="${error}" class="error" th:text="${error}"></div>
+
+        <form th:action="@{/bac-si-phong-kham/sua-lich-hen}" method="POST">
+            <input type="hidden" name="patientId" th:value="${patient.patientid}" />
+            <input type="hidden" name="appointmentId" th:value="${appointment.appointmentid}" />
+
+            <div class="info-group">
+                <label for="fullname">Họ và tên:</label>
+                <input type="text" id="fullname" name="fullname" th:value="${patient.fullname}" required>
+            </div>
+
+            <div class="info-group">
+                <label for="gender">Giới tính:</label>
+                <select id="gender" name="gender" required>
+                    <option value="Nam" th:selected="${patient.gender.toString() == 'Nam'}">Nam</option>
+                    <option value="Nữ" th:selected="${patient.gender.toString() == 'Nữ'}">Nữ</option>
+                    <option value="Khác" th:selected="${patient.gender.toString() == 'Khác'}">Khác</option>
+                </select>
+            </div>
+
+            <div class="info-group">
+                <label for="dateofbirth">Ngày sinh:</label>
+                <input type="date" id="dateofbirth" name="dateofbirth"
+                    th:value="${#temporals.format(patient.dateofbirth, 'yyyy-MM-dd')}" required>
+            </div>
+
+            <div class="info-group">
+                <label for="phone">Số điện thoại:</label>
+                <input type="tel" id="phone" name="phone" th:value="${patient.phone}" required>
+            </div>
+
+            <div class="info-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" th:value="${patient.email}" required>
+            </div>
+
+            <div class="info-group">
+                <label for="address">Địa chỉ:</label>
+                <input type="text" id="address" name="address" th:value="${patient.address}" required>
+            </div>
+
+            <div class="info-group">
+                <label for="doctor">Bác sĩ phụ trách:</label>
+                <input type="text" id="doctor" name="doctor" th:value="${appointment.doctor.fullname}" readonly>
+            </div>
+
+            <div class="info-group">
+                <label for="reason">Dịch vụ khám:</label>
+                <input type="text" id="reason" name="reason" th:value="${appointment.reason}" required>
+            </div>
+
+            <div class="info-group">
+                <label for="appointmentdate">Ngày hẹn khám:</label>
+                <input type="date" id="appointmentdate" name="appointmentdate"
+                    th:value="${#temporals.format(appointment.appointmentdate, 'yyyy-MM-dd')}" required>
+            </div>
+
+            <div class="info-group">
+                <label for="appointmenttime">Giờ hẹn khám:</label>
+                <input type="time" id="appointmenttime" name="appointmenttime"
+                    th:value="${#temporals.format(appointment.appointmenttime, 'HH:mm')}" required>
+            </div>
+
+            <div class="info-group">
+                <label for="status">Trạng thái:</label>
+                <select id="status" name="status" required>
+                    <option value="Chưa_xác_nhận" th:selected="${appointment.status.toString() == 'Chưa_xác_nhận'}">Chưa
+                        xác nhận</option>
+                    <option value="Đã_xác_nhận" th:selected="${appointment.status.toString() == 'Đã_xác_nhận'}">Đã xác
+                        nhận</option>
+                </select>
+            </div>
+
+            <div class="actions">
+                <a href="/bac-si-phong-kham/quan-ly-lich-hen" class="btn back">← Quay lại</a>
+                <button type="submit" class="btn save">💾 Lưu thay đổi</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+
+</html>

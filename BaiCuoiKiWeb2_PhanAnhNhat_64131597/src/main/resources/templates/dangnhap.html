@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập Bác sĩ - HealthCarePro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #6366f1;
+            --background-color: #f0f4f8;
+            --text-color: #1f2937;
+            --card-bg: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+		    font-family: 'Poppins', sans-serif;
+		    background: url("/medical-background-cjge7e89adg6ub8x.jpg") no-repeat center center fixed;
+		    background-size: cover;
+		    min-height: 100vh;
+		    display: flex;
+		    flex-direction: column;
+		    
+		}
+
+        .header {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-top .logo {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-right: 7vw;
+        }
+        
+        main {
+		    display: flex;
+		    justify-content: center;
+		    align-items: center;
+		    flex-grow: 1; /* Đảm bảo main chiếm toàn bộ không gian còn lại */
+		}
+
+        .main-nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+            padding: 0;
+            gap: 5vw;
+            margin-top: 0.7vw;
+        }
+
+        .main-nav ul li {
+            margin: 0 15px;
+        }
+
+        .main-nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .main-nav ul li a:hover {
+            color: #e0e0e0;
+        }
+
+        .logout-link a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .logout-link a:hover {
+            color: #e0e0e0;
+        }
+
+        .login-container {
+		    background-color: rgba(255, 255, 255, 0.95);
+		    padding: 40px;
+		    border-radius: 12px;
+		    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+		    width: 100%;
+		    max-width: 400px;
+		    backdrop-filter: blur(5px);
+		    border: 1px solid rgba(255, 255, 255, 0.2);
+		    animation: fadeIn 0.5s ease-out;
+		}
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            text-align: center;
+            color: #4f46e5;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #4f46e5;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background-color: #4f46e5;
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .btn-login:hover {
+            background-color: #4338ca;
+            transform: translateY(-2px);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .link {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .link a {
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .link a:hover {
+            color: #4338ca;
+            text-decoration: underline;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav ul li {
+                margin: 0 10px;
+            }
+
+            .login-container {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header .logo {
+                font-size: 22px;
+            }
+
+            nav ul li {
+                margin: 0 8px;
+            }
+
+            nav ul li a {
+                font-size: 14px;
+            }
+
+            .login-container {
+                padding: 25px 15px;
+            }
+
+            h2 {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div th:insert="~{fragments/menu :: menu}"></div>
+
+    <main>
+        <div class="login-container">
+            <h2>Đăng nhập Bác sĩ</h2>
+            <div th:if="${error}" class="error" th:text="${error}"></div>
+            <div th:if="${message}" class="message" th:text="${message}"></div>
+            <form th:action="@{/bac-si-phong-kham/dang-nhap}" method="POST">
+                <div class="form-group">
+                    <label for="username">Email:</label>
+                    <input type="email" name="username" id="username" required placeholder="Nhập email của bạn" />
+                </div>
+                <div class="form-group">
+                    <label for="password">Mật khẩu:</label>
+                    <input type="password" name="password" id="password" required placeholder="Nhập mật khẩu" />
+                </div>
+                <button type="submit" class="btn-login">Đăng nhập</button>
+                
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>

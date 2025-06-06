@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chi tiết bệnh nhân - Đặt lịch khám bệnh</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #6366f1;
+            --background-color: #f0f4f8;
+            --text-color: #1f2937;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .header {
+            background-color: blue;
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-top .logo {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-right: 7vw;
+        }
+
+        .main-nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+            padding: 0;
+            gap: 5vw;
+            margin-top: 0.7vw;
+        }
+
+        .main-nav ul li {
+            margin: 0 15px;
+        }
+
+        .main-nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .main-nav ul li a:hover {
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+        }
+
+        .info-group {
+            margin-bottom: 20px;
+        }
+
+        .info-group label {
+            font-weight: 600;
+            color: #4b5563;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .info-group p {
+            padding: 10px;
+            background: #f3f4f6;
+            border-radius: 6px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+
+        .btn.back {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn.back:hover {
+            background-color: #d1d5db;
+        }
+
+        .btn.confirm {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn.confirm:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn.cancel {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .btn.cancel:hover {
+            background-color: #dc2626;
+        }
+
+        .error {
+            color: #ef4444;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div th:insert="~{fragments/menu :: menu}"></div>
+
+    <div class="container">
+        <h2>Chi tiết bệnh nhân</h2>
+        <div th:if="${error}" class="error" th:text="${error}"></div>
+
+        <div class="info-group" th:unless="${appointment == null}">
+            <label>Họ và tên:</label>
+            <p th:text="${appointment.patient.fullname}"></p>
+        </div>
+
+        <div class="info-group" th:unless="${appointment == null}">
+            <label>Giới tính:</label>
+            <p th:text="${appointment.patient.gender}"></p>
+        </div>
+
+        <div class="info-group" th:unless="${appointment == null}">
+            <label>Ngày sinh:</label>
+            <p th:text="${#temporals.format(appointment.patient.dateofbirth, 'dd/MM/yyyy')}"></p>
+        </div>
+
+        <div class="info-group" th:unless="${appointment == null}">
+            <label>Số điện thoại:</label>
+            <p th:text="${appointment.patient.phone}"></p>
+        </div>
+
+        <div class="info-group" th:unless="${appointment == null}">
+            <label>Địa chỉ:</label>
+            <p th:text="${appointment.patient.address}"></p>
+        </div>
+
+        <div class="info-group" th:unless="${appointment == null}">
+            <label>Dịch vụ khám:</label>
+            <p th:text="${appointment.reason}"></p>
+        </div>
+
+        <div class="info-group" th:unless="${appointment == null}">
+            <label>Ngày hẹn khám:</label>
+            <p th:text="${#temporals.format(appointment.appointmentdate, 'dd/MM/yyyy') + ' - ' + #temporals.format(appointment.appointmenttime, 'HH:mm')}"></p>
+        </div>
+
+        <div class="info-group" th:unless="${appointment == null}">
+            <label>Trạng thái:</label>
+            <p th:text="${appointment.status}"></p>
+        </div>
+
+        <div class="actions" th:if="${appointment != null}">
+            <a href="/bac-si-phong-kham/quan-ly-lich-hen" class="btn back">← Quay lại</a>
+            <div th:if="${appointment.status.toString() == 'Chưa_xác_nhận'}">
+                <form th:action="@{/bac-si-phong-kham/xac-nhan-kham}" method="POST">
+                    <input type="hidden" name="appointmentId" th:value="${appointment.appointmentid}" />
+                    <button type="submit" class="btn confirm">✅ Xác nhận khám</button>
+                </form>
+            </div>
+            <div th:if="${appointment.status.toString() == 'Đã_xác_nhận'}">
+                <form th:action="@{/bac-si-phong-kham/huy-xac-nhan-kham}" method="POST">
+                    <input type="hidden" name="appointmentId" th:value="${appointment.appointmentid}" />
+                    <button type="submit" class="btn cancel">❌ Hủy xác nhận</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

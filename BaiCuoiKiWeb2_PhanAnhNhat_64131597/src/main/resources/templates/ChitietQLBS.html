@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chi tiết Bác sĩ - HealthCarePro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #6366f1;
+            --background-color: #f0f4f8;
+            --text-color: #1f2937;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #e0eafc, #cfdef3);
+            color: var(--text-color);
+        }
+
+        .header {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-top .logo {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-right: 7vw;
+        }
+
+        .main-nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+            padding: 0;
+            gap: 5vw;
+            margin-top: 0.7vw;
+        }
+
+        .main-nav ul li {
+            margin: 0 15px;
+        }
+
+        .main-nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .main-nav ul li a:hover {
+            color: #e0e0e0;
+        }
+
+        .logout-link a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .logout-link a:hover {
+            color: #e0e0e0;
+        }
+
+        .doctor-detail {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 90vh;
+            padding: 40px 20px;
+            background: url('https://images.unsplash.com/photo-1588776814546-ec7d207b1d73?auto=format&fit=crop&w=1400&q=80') no-repeat center center/cover;
+            position: relative;
+        }
+
+        .card {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 620px;
+            padding: 30px;
+            animation: fadeIn 0.6s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .doctor-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 12px;
+        }
+
+        .card-header h2 {
+            margin: 0;
+            font-size: 24px;
+            color: #2c3e50;
+        }
+
+        .card-header p {
+            color: #7f8c8d;
+            margin: 4px 0;
+        }
+
+        .card-body .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .info-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #ecf0f1;
+            font-size: 16px;
+        }
+
+        .card-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn-book {
+            background: #27ae60;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-book:hover {
+            background: #219150;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        footer {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); /* Màu xanh dương nhạt phù hợp với bệnh viện */
+            padding: 50px 20px;
+            font-family: 'Roboto', Arial, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        footer h4 {
+            margin-bottom: 15px;
+            color: #ffffff; /* Màu xanh đậm nhẹ cho tiêu đề */
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        footer p, footer a {
+            font-size: 14px;
+            color: #ffffff; /* Màu xám đậm nhẹ nhàng */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #007BFF; /* Màu xanh dương sáng khi hover */
+            text-decoration: underline;
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .footer-section {
+            flex: 1 1 200px;
+            margin-bottom: 20px;
+        }
+
+        .footer-section img.logo {
+            width: 150px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .footer-section img.logo:hover {
+            transform: scale(1.05); /* Hiệu ứng phóng to nhẹ khi hover */
+        }
+        
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .footer-container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .footer-section {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+
+    <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div th:insert="~{fragments/menu :: menu}"></div>
+
+    <main class="doctor-detail">
+        <div class="card">
+            <div class="card-header">
+                <img th:src="${doctor.profileImage != null && doctor.profileImage != '' ? doctor.profileImage : '/images/default-doctor.jpg'}"
+                     alt="Ảnh bác sĩ" class="doctor-avatar" />
+                <h2 th:text="${doctor.fullname}">BS. Nguyễn Văn A</h2>
+                <p th:text="${'Chuyên khoa: ' + doctor.department}">Chuyên khoa: Nội tổng quát</p>
+            </div>
+            <div class="card-body">
+                <ul class="info-list">
+                    <li><strong>Giới tính:</strong> <span th:text="${doctor.gender}">Nam</span></li>
+                    <li><strong>Số điện thoại:</strong> <span th:text="${doctor.phone}">0901 234 567</span></li>
+                    <li><strong>Email:</strong> <span th:text="${doctor.email}">nguyenvana@gmail.com</span></li>
+                    <li><strong>Lịch làm việc:</strong> <span th:text="${doctor.workinghours}">Thứ 2, 4, 6 - 8:00 đến 17:00</span></li>
+                    <li><strong>Địa chỉ:</strong> <span th:text="${doctor.address != null ? doctor.address : 'Chưa cung cấp'}">Bệnh viện Đa khoa Trung tâm Nha Trang</span></li>
+                    <li><strong>Trình độ:</strong> <span th:text="${doctor.qualifications != null ? doctor.qualifications : 'Chưa cung cấp'}">Thạc sĩ Y khoa</span></li>
+                    <li><strong>Trạng thái:</strong> <span th:text="${doctor.status.toString() == 'hoạt_động' ? 'Hoạt động' : 'Không hoạt động'}">Hoạt động</span></li>
+                </ul>
+            </div>
+            
+        </div>
+    </main>
+
+    <div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+
+</html>

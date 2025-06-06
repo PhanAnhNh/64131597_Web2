@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Header Fragment</title>
+</head>
+<body>
+    <nav th:fragment="menu" class="header">
+        <div class="header-top">
+            <div class="logo">🩺 HealthCarePro</div>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a th:href="@{/bac-si-phong-kham/admin}">Trang chủ</a></li>
+                <li><a th:href="@{/bac-si-phong-kham/admin}">Dịch vụ</a></li>
+                <li><a th:href="@{/bac-si-phong-kham/admin}">Tin tức</a></li>
+                <li><a th:href="@{/bac-si-phong-kham/admin}">Liên hệ</a></li>
+                <li sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/bac-si-phong-kham/dang-nhap}">Đăng nhập</a>
+                </li>
+                <li sec:authorize="isAuthenticated()">
+                    <a th:href="@{/bac-si-phong-kham/dang-xuat}">Đăng xuất</a>
+                </li>
+            </ul>
+        </nav>
+    </nav>
+    
+</body>
+</html>

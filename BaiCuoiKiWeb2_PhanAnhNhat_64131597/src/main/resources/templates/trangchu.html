@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trang chủ - Đặt lịch khám bệnh</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #6366f1;
+            --background-color: #f0f4f8;
+            --text-color: #1f2937;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .logo {
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #e0e0e0;
+        }
+
+        /* Banner */
+        .banner img {
+            width: 100%;
+            position: relative;
+
+        }
+
+        .banner h1 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 40px;
+            font-weight: 600;
+            text-align: center;
+            padding: 0 20px;
+            max-width: 90%;
+
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Nội dung */
+        .content {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+
+        .content a {
+            text-decoration: none;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            font-size: 15px;
+        }
+
+        .card-icon {
+            font-size: 40px;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); /* Màu xanh dương nhạt phù hợp với bệnh viện */
+            padding: 50px 20px;
+            font-family: 'Roboto', Arial, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        footer h4 {
+            margin-bottom: 15px;
+            color: #ffffff; /* Màu xanh đậm nhẹ cho tiêu đề */
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        footer p, footer a {
+            font-size: 14px;
+            color: #ffffff; /* Màu xám đậm nhẹ nhàng */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #007BFF; /* Màu xanh dương sáng khi hover */
+            text-decoration: underline;
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .footer-section {
+            flex: 1 1 200px;
+            margin-bottom: 20px;
+        }
+
+        .footer-section img.logo {
+            width: 150px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .footer-section img.logo:hover {
+            transform: scale(1.05); /* Hiệu ứng phóng to nhẹ khi hover */
+        }
+        
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .footer-container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .footer-section {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+
+    <!-- Icons (Font Awesome CDN) -->
+    <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div th:insert="fragments/header :: header"></div>
+    <!-- Banner -->
+    <section class="banner">
+        <img th:src="@{/images/285867aaa8b681b.jpg}" alt="">
+        <h1>Giải pháp đặt lịch khám bệnh thông minh - Nhanh chóng, An toàn & Tiện lợi</h1>
+    </section>
+
+
+    <!-- Thêm vào sau phần .banner và trước .content -->
+    <section style="background-color: #ffffff; padding: 60px 20px;">
+        <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
+            <h2 style="color: #4f46e5; margin-bottom: 20px;">Về HealthCarePro</h2>
+            <p style="font-size: 16px; line-height: 1.7; color: #374151;">
+                HealthCarePro là hệ thống đặt lịch khám bệnh hiện đại, kết nối trực tiếp người bệnh với đội ngũ y bác sĩ
+                giàu kinh nghiệm.
+                Chúng tôi cam kết mang đến trải nghiệm y tế thuận tiện, an toàn và tiết kiệm thời gian.
+            </p>
+        </div>
+    </section>
+
+    <!-- THÔNG BÁO -->
+    <section style="background-color: #fef9c3; padding: 40px 20px;">
+        <div style="max-width: 1000px; margin: 0 auto;">
+            <h3 style="color: #92400e; font-size: 22px; margin-bottom: 15px;">🔔 Thông báo mới</h3>
+            <ul style="padding-left: 20px; color: #7c2d12; line-height: 1.8;">
+                <li>🏥 Phòng khám Da liễu mở cửa từ 7h00 đến 20h00 hàng ngày.</li>
+                <li>🩺 Ưu đãi 20% cho khách hàng đặt lịch lần đầu trong tháng 5.</li>
+                <li>💉 Đợt tiêm vắc-xin phòng cúm mùa sẽ diễn ra từ 15/5 - 20/5.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- QUẢNG CÁO -->
+    <section style="background-color: #e0f2fe; padding: 50px 20px;">
+        <div style="max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 30px; align-items: center;">
+            <div style="flex: 1 1 300px;">
+                <h3 style="color: #0284c7; font-size: 24px; margin-bottom: 15px;">🎉 Khám sức khỏe tổng quát chỉ từ
+                    499.000đ</h3>
+                <p style="color: #0c4a6e;">
+                    Gói khám tiết kiệm – phù hợp cho cá nhân, gia đình, công ty. Bao gồm các chỉ số quan trọng, xét
+                    nghiệm cơ bản và tư vấn bởi bác sĩ chuyên khoa.
+                </p>
+            </div>
+            <div style="flex: 1 1 300px;">
+                <img src="https://img.freepik.com/free-vector/healthcare-concept-illustration_114360-2854.jpg?w=800"
+                    alt="Khám sức khỏe"
+                    style="width: 100%; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Nội dung chính -->
+    <section class="content">
+        <a th:href="@{/phong-kham-vi-suc-khoe/dat-lich-kham}">
+            <div class="card">
+                <div class="card-icon">📅</div>
+                <h3>Đặt lịch trực tuyến</h3>
+                <p>Lựa chọn bác sĩ và khung giờ phù hợp, đặt lịch chỉ trong vài bước đơn giản.</p>
+            </div>
+        </a>
+        <a href="">
+            <div class="card">
+                <div class="card-icon">🩻</div>
+                <h3>Dịch vụ đa dạng</h3>
+                <p>Khám tổng quát, chuyên khoa, xét nghiệm, chẩn đoán hình ảnh & nhiều hơn nữa.</p>
+            </div>
+        </a>
+        <a th:href="@{/phong-kham-vi-suc-khoe/bac-si}">
+            <div class="card">
+                <div class="card-icon">👨‍⚕️</div>
+                <h3>Đội ngũ bác sĩ uy tín</h3>
+                <p>Chuyên gia hàng đầu trong các lĩnh vực, tận tâm và giàu kinh nghiệm.</p>
+            </div>
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <div th:insert="fragments/footer :: footer"></div>
+</body>
+
+</html>
