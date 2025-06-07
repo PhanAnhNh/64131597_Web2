@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết nhà khoa học</title>
+    <!-- Liên kết CSS -->
+    <link rel="stylesheet" th:href="@{/css/nkh_detail.css}">
+      
+</head>
+
+<body>
+    <div class="container">
+        <div th:insert="fragments/sidebar :: sidebar"></div>
+        <div class="profile-header">
+            <div class="avatar-section">
+               <img th:src="@{${nkh.hinhAnh != null and nkh.hinhAnh != 'NULL' ? nkh.hinhAnh : '/img/picdefault.jpg'}}" alt="Ảnh nhà khoa học" class="avatar">
+                <h2 th:text="${nkh.hoTen}"></h2>
+                <p th:text="${nkh.hocVi}"></p>
+            </div>
+            <div class="stats-section">
+                <div class="stat-box">
+                    <h3 th:text="${tongSoBao}"></h3>
+                    <p>BÀI BÁO</p>
+                </div>
+                <div class="stat-box">
+                  <h3 th:text="${tongSoSach}"></h3>
+                    <p>SÁCH - GIÁO TRÌNH</p>
+                </div>
+                <div class="stat-box">
+                    <h3 th:text="${tongSoDeTai}"></h3>
+                    <p>ĐỀ TÀI KHOA HỌC</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-wrapper">
+            <div class="info-section">
+                <h4>Thông tin:</h4>
+                <div class="info-box">
+                    <p><strong>Họ và tên:</strong> <span th:text="${nkh.hoTen}"></span></p>
+                    <p><strong>Giới tính:</strong> <span th:text="${nkh.gioiTinh}"></span></p>
+                    <p><strong>Năm sinh:</strong> <span th:text="${nkh.namSinh}"></span></p>
+                </div>
+                
+                <div class="info-box">
+                    <p><strong>📞 Liên hệ:</strong></p>
+                    <p><strong>Email:</strong> <span th:text="${nkh.email}"></span></p>
+                </div>
+                                
+            </div>
+
+            <div class="expertise-section">
+                <h4>Chuyên môn:</h4>
+                <div class="info-box">
+                    <p><strong>Chức danh:</strong> <span th:text="${nkh.hocVi != null ? nkh.hocVi : 'Chưa cập nhật'}"></span></p>
+                    <p><strong>Ngành đào tạo:</strong> <span th:text="${nkh.nganhDaoTao != null ? nkh.nganhDaoTao : 'Chưa cập nhật'}"></span></p>
+                    <p><strong>Chuyên ngành đào tạo:</strong> <span th:text="${nkh.chuyenMon != null ? nkh.chuyenMon : 'Chưa cập nhật'}"></span></p>
+                    <p><strong>Chuyên môn giảng dạy:</strong> <span th:text="${nkh.linhVucNghienCuu != null ? nkh.linhVucNghienCuu : 'Chưa cập nhật'}"></span></p>
+                    <p><strong>Lĩnh vực nghiên cứu:</strong> <span th:text="${nkh.linhVucNghienCuu != null ? nkh.linhVucNghienCuu : 'Chưa cập nhật'}"></span></p>
+                   
+                </div>
+            </div>
+        </div>
+
+      
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sidebar Fragment</title>
+    
+</head>
+<body>
+    <aside class="sidebar" th:fragment="sidebar">
+    <div class="logo">
+        <img th:src="@{/image/TRƯỜNG ĐẠI HỌC NHA TRANG.png}" alt="" style="width: 240px; height: 80px;">
+    </div>
+    <nav>
+        <a th:href="@{/quanlykhoahoc/trangchu}" class="active"> Trang chủ</a>
+        <a th:href="@{/quanlykhoahoc/nhakhoahoc}">Nhà khoa học</a>
+        <a th:href="@{/quanlykhoahoc/detai}">Đề tài khoa học</a>
+        <a th:href="@{/quanlykhoahoc/baibaokhoahoc}">Bài báo khoa học</a>
+        <a th:href="@{/quanlykhoahoc/giaotrinh}">Sách và giáo trình</a>
+        <div class="dropdown">
+            <button class="dropdown-toggle">Khác</button>
+            <div class="dropdown-menu">
+                <a th:href="@{/quanlykhoahoc/giaithuong}">Giải thưởng</a>
+                <a th:href="@{/quanlykhoahoc/congtrinh}">Công trình thực tiễn</a>
+                <a th:href="@{/quanlykhoahoc/sohuutritue}">Sở hữu trí tuệ</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropdown-toggle">Thống kê</button>
+            <div class="dropdown-menu">
+                <a th:href="@{/quanlykhoahoc/thong-ke-nha-khoa-hoc}">Nhà khoa học</a>
+                <a th:href="@{/quanlykhoahoc/thong-ke-de-tai}">Đề tài KHCN</a>
+                <a th:href="@{/quanlykhoahoc/thongke}">Bài báo Khoa học</a>
+                <a th:href="@{/quanlykhoahoc/thong-ke-giao-trinh}">Sách và giáo trình</a>
+                <a th:href="@{/quanlykhoahoc/thong-ke-cong-trinh}">Công trình thực tiễn</a>
+                <a th:href="@{/quanlykhoahoc/thong-ke-giai-thuong}">Giải thưởng</a>
+                <a th:href="@{/quanlykhoahoc/thong-ke-so-huu-tri-tue}">Sở hữu trí tuệ</a>
+            </div>
+        </div>
+    </nav>
+</aside>
+
+</body>
+</html>

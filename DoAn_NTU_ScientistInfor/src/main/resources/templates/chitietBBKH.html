@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Thông tin bài báo khoa học</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 270px;
+            background: #102c57;
+            color: white;
+            min-height: 100vh;
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            left: 0;
+            top: 0;
+            gap: 20px;
+        }
+
+        .sidebar .logo {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .sidebar nav a,
+        .dropdown-toggle {
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+            font-size: 15px;
+            display: block;
+        }
+
+        .sidebar nav a:hover,
+        .sidebar nav a.active,
+        .dropdown-toggle:hover {
+            background-color: #1f4172;
+        }
+
+        .dropdown {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dropdown-toggle {
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            display: none;
+            flex-direction: column;
+            background-color: #1f4172;
+            border-radius: 6px;
+            margin-left: 10px;
+            margin-top: 4px;
+        }
+
+        .dropdown-menu a {
+            padding: 10px 15px;
+            text-decoration: none;
+            color: white;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #3b5ea0;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: flex;
+        }
+
+        .main {
+            margin-left: 270px;
+            padding: 40px;
+            flex: 1;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            border-left: 6px solid #e74c3c;
+            padding-left: 15px;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .info-table th,
+        .info-table td {
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: top;
+        }
+
+        .info-table th {
+            background-color: #fafafa;
+            width: 220px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .section {
+            margin-top: 25px;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #3498db;
+            border-radius: 8px;
+            display: flex;
+        }
+
+        .section a {
+            font-size: 15px;
+            width: 43vw;
+            display: inline-block;
+        }
+
+        .section span {
+            font-weight: 600;
+            color: #2c3e50;
+            display: inline-block;
+        }
+
+        a {
+            color: #2980b9;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: #1d6fa5;
+        }
+
+        .info-table th,
+        .info-table td {
+            text-align: left;
+            padding: 8px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: top;
+        }
+
+        .info-table th {
+            background-color: #fafafa;
+            width: 160px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .section span:nth-of-type(1) {
+            font-size: 15px;
+            width: 160px;
+            display: inline-block;
+        }
+
+        .section span:nth-of-type(2) {
+            font-size: 15px;
+            width: 30vw;
+            display: inline-block;
+        }
+
+        .display-mode {
+            display: inline; /* Ensure display mode is visible initially */
+        }
+
+        .edit-mode {
+            display: none; /* Hidden by default */
+        }
+
+        .edit-mode input,
+        .edit-mode select {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .edit-buttons {
+            margin-top: 10px;
+            text-align: right;
+        }
+
+        .edit-buttons button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .edit-buttons .save-btn {
+            background-color: #3498db;
+            color: white;
+            display: none;
+        }
+
+        .edit-buttons .cancel-btn {
+            background-color: #e74c3c;
+            color: white;
+            display: none;
+        }
+
+        .edit-buttons .edit-btn {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                flex-direction: row;
+                overflow-x: auto;
+                min-height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .info-table th {
+                display: block;
+                width: 100%;
+                background: #f1f1f1;
+            }
+
+            .info-table td {
+                display: block;
+                padding-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div th:insert="fragments/sidebar :: sidebar"></div>
+    <main class="main">
+        <div class="container">
+            <h2>THÔNG TIN BÀI BÁO KHOA HỌC</h2>
+            <form th:action="@{/quanlykhoahoc/baibaokhoahoc/chitiet/capnhat-tapchi/{baiBaoId}(baiBaoId=${baiBao.baiBaoId})}" 
+                  th:object="${tapChi}" method="post" id="tapChiForm">
+                <input type="hidden" th:field="*{tapChiId}" />
+
+                <table class="info-table">
+                    <tr>
+                        <th class="main-label">Tên bài báo:</th>
+                        <td colspan="2" th:text="${baiBao.tenBaiBao}"></td>
+                    </tr>
+                    <tr>
+                        <th class="group-label">Tạp chí:</th>
+                        <td class="sub-label">ISSN:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="sub-label">Tên tạp chí</td>
+                        <td>
+                            <span class="display-mode" th:text="${tapChi.tenTapChi != null ? tapChi.tenTapChi : 'Chưa có thông tin'}"></span>
+                            <div class="edit-mode">
+                                <input type="text" th:field="*{tenTapChi}" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="sub-label">Phạm vi:</td>
+                        <td>
+                            <span class="display-mode" th:text="${tapChi.phamVi != null ? tapChi.phamVi : 'Chưa có thông tin'}"></span>
+                            <div class="edit-mode">
+                                <select th:field="*{phamVi}">
+                                    <option value="">Chọn phạm vi</option>
+                                    <option th:value="'Trong_nước'" th:text="'Trong nước'"></option>
+                                    <option th:value="'Nước_ngoài'" th:text="'Nước ngoài'"></option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="sub-label">Cơ quan xuất bản</td>
+                        <td>
+                            <span class="display-mode" th:text="${tapChi.toChuc != null ? tapChi.toChuc : 'Chưa có thông tin'}"></span>
+                            <div class="edit-mode">
+                                <input type="text" th:field="*{toChuc}" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="sub-label">Loại tạp chí</td>
+                        <td>Tạp chí</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="sub-label">Cấp tạp chí</td>
+                        <td>
+                            <span class="display-mode" th:text="${tapChi.mucChatLuong != null ? tapChi.mucChatLuong : 'Chưa có thông tin'}"></span>
+                            <div class="edit-mode">
+                                <input type="text" th:field="*{mucChatLuong}" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="sub-label">Năm đăng</td>
+                        <td>
+                            <span class="display-mode" th:text="${tapChi.namDang != null ? tapChi.namDang : 'Chưa có thông tin'}"></span>
+                            <div class="edit-mode">
+                                <input type="date" th:field="*{namDang}" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="sub-label">Tập:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="sub-label">Số:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="sub-label">Trang:</td>
+                        <td></td>
+                    </tr>
+                </table>
+
+                <div class="edit-buttons">
+                    <!-- Show Edit Journal button only for Admin and NKH -->
+                    <a href="#" class="edit-btn" onclick="toggleEditMode()" sec:authorize="hasAnyAuthority('Admin', 'NKH')">Chỉnh sửa tạp chí</a>
+                    <button type="submit" form="tapChiForm" class="save-btn">Lưu</button>
+                    <button type="button" class="cancel-btn" onclick="toggleEditMode()">Hủy</button>
+                </div>
+            </form>
+
+            <div class="section"><span>Lĩnh vực:</span><span th:text="${baiBao.linhVuc}"></span></div>
+            <div class="section"><span>Tác giả:</span><span th:text="${tenTacGia}"></span></div>
+            <div class="section"><span>Thuộc đề tài:</span> 0</div>
+            <div class="section">
+                <span>Liên kết:</span>
+                <a th:href="${baiBao.lienKet != null ? baiBao.lienKet : '#'}"
+                   th:text="${baiBao.lienKet != null ? baiBao.lienKet : 'Chưa có liên kết'}"
+                   target="_blank"></a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const displayElements = document.querySelectorAll('.display-mode');
+            const editElements = document.querySelectorAll('.edit-mode');
+            const editBtn = document.querySelector('.edit-btn');
+            const saveBtn = document.querySelector('.save-btn');
+            const cancelBtn = document.querySelector('.cancel-btn');
+
+            displayElements.forEach(el => el.style.display = 'inline');
+            editElements.forEach(el => el.style.display = 'none');
+            editBtn.style.display = 'inline-block';
+            saveBtn.style.display = 'none';
+            cancelBtn.style.display = 'none';
+        });
+
+        function toggleEditMode() {
+            console.log("Toggle Edit Mode clicked");
+            const displayElements = document.querySelectorAll('.display-mode');
+            const editElements = document.querySelectorAll('.edit-mode');
+            const editBtn = document.querySelector('.edit-btn');
+            const saveBtn = document.querySelector('.save-btn');
+            const cancelBtn = document.querySelector('.cancel-btn');
+
+            const isEnteringEditMode = editBtn.style.display === 'inline-block';
+
+            if (isEnteringEditMode) {
+                displayElements.forEach(el => el.style.display = 'none');
+                editElements.forEach(el => el.style.display = 'block');
+                editBtn.style.display = 'none';
+                saveBtn.style.display = 'inline-block';
+                cancelBtn.style.display = 'inline-block';
+            } else {
+                displayElements.forEach(el => el.style.display = 'inline');
+                editElements.forEach(el => el.style.display = 'none');
+                editBtn.style.display = 'inline-block';
+                saveBtn.style.display = 'none';
+                cancelBtn.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

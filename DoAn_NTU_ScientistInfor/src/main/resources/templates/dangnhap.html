@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Đăng nhập hệ thống</title>
+    <link rel="stylesheet" th:href="@{/dangnhap.css}">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #e6f0fb;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: linear-gradient(to right, #004b8d, #007acc);
+            color: white;
+        }
+        .logo {
+            height: 80px;
+            margin-right: 15px;
+        }
+        .title h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+        .title p {
+            margin: 2px 0 0;
+            font-size: 14px;
+        }
+        .main-container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .login-section {
+            width: 35%;
+            text-align: center;
+        }
+        .login-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px #ccc;
+            margin-bottom: 20px;
+        }
+        .lock-icon {
+            width: 50px;
+            margin-bottom: 10px;
+        }
+        .login-box input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5%;
+        }
+        .actions a {
+            font-size: 14px;
+        }
+        .actions button {
+            padding: 8px 16px;
+            background-color: #007acc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .important-note {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-left: 5px solid #ffcc00;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+        .important-note h3 {
+            margin-top: 0;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <img src="/image/TRƯỜNG ĐẠI HỌC NHA TRANG.png" alt="Logo" class="logo" style="width: 30vw; margin-left: 5vw;">
+    </header>
+    <div class="main-container">
+        <div class="login-section">
+            <div class="login-box">
+                <h2>Đăng nhập</h2>
+                <form th:action="@{/quanlykhoahoc/dangnhap}" method="post">
+                    <input type="text" name="username" placeholder="Tên đăng nhập" required>
+                    <input type="password" name="password" placeholder="Mật khẩu" required>
+                    <div th:if="${param.error}" class="error">
+                        Tên đăng nhập hoặc mật khẩu không đúng.
+                    </div>
+                    <div th:if="${param.logout}" class="error">
+                        Bạn đã đăng xuất thành công.
+                    </div>
+                    <div th:if="${param.registered}" class="success" style="color: green;">
+                        Đăng ký thành công! Vui lòng đăng nhập.
+                    </div>
+                    <div class="actions">
+                        <a href="#">Quên mật khẩu</a>
+                        <button type="submit">ĐĂNG NHẬP</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="notification-section">
+            <div class="important-note">
+                <h3>🔒 Lưu ý quan trọng</h3>
+                <p>Chỉ <strong>Admin</strong> và <strong>Nhà khoa học</strong> mới được phép đăng nhập hệ thống này.</p>
+                <p>Người dùng thông thường <strong>không cần và không được đăng nhập</strong> để xem nội dung trên website.</p>
+                <p>Vui lòng quay lại <a th:href="@{/quanlykhoahoc/trangchu}">trang chủ</a> để xem các nội dung công khai.</p>
+            </div>
+        </div>
+    </div>
+    <script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        const username = document.querySelector('input[name="username"]');
+        const password = document.querySelector('input[name="password"]');
+        username.value = username.value.trim();
+        password.value = password.value.trim();
+    });
+</script>
+</body>
+</html>

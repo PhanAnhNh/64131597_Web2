@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thống kê sở hữu trí tuệ</title>
+    <link rel="stylesheet" th:href="@{/css/thongkeNKH.css}" />
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div th:insert="fragments/sidebar :: sidebar"></div>
+        <!-- Main content -->
+        <main class="main">
+            <h1>Cơ sở dữ liệu Khoa học Công nghệ</h1>
+            <div th:insert="fragments/banner :: banner"></div>
+            <div class="article-page">
+                <div class="article-header">
+                    <h2>THỐNG KÊ SỐ LƯỢNG GIẢI THƯỞNG</h2>
+                    <div class="underline"></div>
+                </div>
+
+                <table id="table-tong-hop">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Giải thưởng</th>
+                            <th>Số lượng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="stat, iterStat : ${thongKeGiaiThuong}">
+                            <td th:text="${iterStat.count}"></td>
+                            <td th:text="${stat.noiDung}"></td>
+                            <td th:text="${stat.soLuong}"></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2" style="text-align: center; font-weight: bold;">Tổng cộng</td>
+                            <td style="font-weight: bold;" th:text="${totalGiaiThuong}"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+
+        </main>
+
+
+    </div>
+    <div th:insert="fragments/footer :: footer"></div>
+</body>
+
+</html>

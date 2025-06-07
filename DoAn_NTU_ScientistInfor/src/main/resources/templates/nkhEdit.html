@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chỉnh sửa nhà khoa học</title>
+    <link rel="stylesheet" th:href="@{/css/nkh_edit.css}">
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .edit-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .form-row label {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .form-row input[type="text"],
+        .form-row input[type="number"],
+        .form-row input[type="email"],
+        .form-row textarea,
+        .form-row select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .form-row textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .form-row input[readonly] {
+            background-color: #f5f5f5;
+        }
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-size: 12px;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .save-btn, .cancel-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        .save-btn {
+            background-color: #2ecc71;
+            color: white;
+        }
+        .save-btn:hover {
+            background-color: #27ae60;
+        }
+        .cancel-btn {
+            background-color: #e74c3c;
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cancel-btn:hover {
+            background-color: #c0392b;
+        }
+        .image-preview {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .image-preview img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            .image-preview img {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div th:insert="fragments/sidebar :: sidebar"></div>
+    <main class="main">
+        <div class="container">
+            <h2>CHỈNH SỬA NHÀ KHOA HỌC</h2>
+            <form class="edit-form" th:action="@{/quanlykhoahoc/nkh/edit/{id}(id=${nkh.id})}" th:object="${nkh}" method="post" enctype="multipart/form-data">
+                <div class="form-row">
+                    <label for="id">Mã số:</label>
+                    <input type="text" id="id" name="id" th:field="*{id}" readonly>
+                    <div th:if="${#fields.hasErrors('id')}" class="error-message" th:errors="*{id}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="tenTaiKhoan">Tên tài khoản:</label>
+                    <select id="tenTaiKhoan" name="tenTaiKhoan" th:field="*{tenTaiKhoan}">
+                        <option value="" th:disabled="true" th:selected="${nkh.tenTaiKhoan == null}">Chọn tài khoản</option>
+                        <option th:each="tk : ${taiKhoanList}" 
+                                th:value="${tk.tenTaiKhoan}" 
+                                th:text="${tk.tenTaiKhoan}" 
+                                th:selected="${tk.tenTaiKhoan == nkh.tenTaiKhoan}">
+                        </option>
+                    </select>
+                    <div th:if="${#fields.hasErrors('tenTaiKhoan')}" class="error-message" th:errors="*{tenTaiKhoan}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="hoTen">Họ và tên:</label>
+                    <textarea id="hoTen" name="hoTen" th:field="*{hoTen}" required></textarea>
+                    <div th:if="${#fields.hasErrors('hoTen')}" class="error-message" th:errors="*{hoTen}"></div>
+                </div>
+                <div class="form-row">
+                    <label>Giới tính:</label>
+                    <div class="checkbox-group">
+                        <label><input type="radio" name="gioiTinh" th:field="*{gioiTinh}" value="Nam"> Nam</label>
+                        <label><input type="radio" name="gioiTinh" th:field="*{gioiTinh}" value="Nữ"> Nữ</label>
+                    </div>
+                    <div th:if="${#fields.hasErrors('gioiTinh')}" class="error-message" th:errors="*{gioiTinh}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="namSinh">Năm sinh:</label>
+                    <input type="number" id="namSinh" name="namSinh" th:field="*{namSinh}" required>
+                    <div th:if="${#fields.hasErrors('namSinh')}" class="error-message" th:errors="*{namSinh}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" th:field="*{email}" required>
+                    <div th:if="${#fields.hasErrors('email')}" class="error-message" th:errors="*{email}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="hocVi">Học vị:</label>
+                    <input type="text" id="hocVi" name="hocVi" th:field="*{hocVi}" required>
+                    <div th:if="${#fields.hasErrors('hocVi')}" class="error-message" th:errors="*{hocVi}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="nganhDaoTao">Ngành đào tạo:</label>
+                    <input type="text" id="nganhDaoTao" name="nganhDaoTao" th:field="*{nganhDaoTao}" required>
+                    <div th:if="${#fields.hasErrors('nganhDaoTao')}" class="error-message" th:errors="*{nganhDaoTao}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="linhVucNghienCuu">Lĩnh vực nghiên cứu:</label>
+                    <textarea id="linhVucNghienCuu" name="linhVucNghienCuu" th:field="*{linhVucNghienCuu}" required></textarea>
+                    <div th:if="${#fields.hasErrors('linhVucNghienCuu')}" class="error-message" th:errors="*{linhVucNghienCuu}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="chuyenMon">Chuyên môn:</label>
+                    <input type="text" id="chuyenMon" name="chuyenMon" th:field="*{chuyenMon}" required>
+                    <div th:if="${#fields.hasErrors('chuyenMon')}" class="error-message" th:errors="*{chuyenMon}"></div>
+                </div>
+                <div class="form-row">
+                    <label for="hinhAnhFile">Ảnh đại diện:</label>
+                    <input type="file" id="hinhAnhFile" name="hinhAnhFile" accept="image/*">
+                    <div class="image-preview">
+                        <img th:src="@{${nkh.hinhAnh != null and nkh.hinhAnh != 'NULL' ? nkh.hinhAnh : '/img/picdefault.jpg'}}" 
+                             alt="Ảnh nhà khoa học" 
+                             onerror="this.src='/img/picdefault.jpg';">
+                    </div>
+                    <div th:if="${#fields.hasErrors('hinhAnh')}" class="error-message" th:errors="*{hinhAnh}"></div>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="save-btn">Lưu</button>
+                    <a th:href="@{/quanlykhoahoc/nhakhoahoc}" class="cancel-btn">Hủy</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
